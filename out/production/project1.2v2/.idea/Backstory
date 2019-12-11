@@ -1,0 +1,27 @@
+Locatie: ziekenhuis
+probleem: stroomuitval
+Wincondition: druk op de knop om de stroom weer aan te zetten / erachter komen wat er met je gebeurd is
+Kamers:
+    Lobby/receptie (hint: patient documentatie)
+    Radiologie (hint: röntgenfoto)
+    Kantine (hint: frikandelbroodje)
+    Ziekenzaal (hint: afdeling)
+    Mortuarium
+    Operatiekamer
+    Spoedeisende hulp
+
+Setting: je wordt wakker in een ziekehuisbed en je weet niet wat er met je gebeurd is.
+
+Sleutel
+Deur (met slot)
+Kamer met deur
+Spel met kamers
+
+Personage
+    acties
+    draaglimiet
+
+
+Items
+    functie
+    gewicht

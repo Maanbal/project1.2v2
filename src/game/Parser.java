@@ -1,3 +1,5 @@
+package src.game;
+
 import java.util.Scanner;
 
 /**
