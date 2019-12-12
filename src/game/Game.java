@@ -93,6 +93,7 @@ public class Game
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
+        System.out.println("Type 'about' to find out about the creators of this game.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
     }
@@ -122,7 +123,7 @@ public class Game
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look")){
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(currentRoom.getItemsInRoom());
         }
         else if (commandWord.equals("back")) {
             if (room.size() > 0){

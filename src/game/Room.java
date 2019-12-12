@@ -1,5 +1,7 @@
 package src.game;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashMap;
 
@@ -21,6 +23,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
+    private ArrayList<Item> itemsInRoom;
 
     /**
      * Create a room described "description". Initially, it has
@@ -32,6 +35,15 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        itemsInRoom = new ArrayList<>();
+    }
+
+    public ArrayList<Item> getItemsInRoom() {
+        return itemsInRoom;
+    }
+
+    public void setItemsInRoom(ArrayList<Item> itemsInRoom) {
+        this.itemsInRoom = itemsInRoom;
     }
 
     /**
