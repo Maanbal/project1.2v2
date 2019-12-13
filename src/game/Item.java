@@ -1,7 +1,5 @@
 package src.game;
 
-import java.util.HashMap;
-
 public class Item {
     private String name;
     private String description;
@@ -9,7 +7,7 @@ public class Item {
     private boolean pickUp;
     private boolean isKey;
 
-    public Item(String name, String description, int weight, boolean pickUp, boolean isKey){
+    public Item(String name, String description, int weight, boolean pickUp, boolean isKey) {
         this.name = name;
         this.description = description;
         this.weight = weight;
