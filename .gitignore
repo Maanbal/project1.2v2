@@ -25,13 +25,5 @@
 hs_err_pid*
 
 !/project_zuul.pdf
-out/production/project1.2v2/.gitignore
-out/production/project1.2v2/.idea/.gitignore
-out/production/project1.2v2/.idea/misc.xml
-out/production/project1.2v2/.idea/modules.xml
-out/production/project1.2v2/.idea/project1.2v2.iml
-out/production/project1.2v2/.idea/uiDesigner.xml
-out/production/project1.2v2/.idea/vcs.xml
-out/production/project1.2v2/README.TXT
-out/production/project1.2v2/README.md
 !/.idea/
+out

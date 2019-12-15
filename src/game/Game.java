@@ -125,98 +125,136 @@ public class Game {
                 // help command
                 printHelp();
                 break;
-// ------------------------------------------------------------
+
             case "go":
                 // go command
                 goRoom(command);
                 break;
-// ------------------------------------------------------------
+
             case "quit":
                 // quit command
                 wantToQuit = quit(command);
                 break;
-// ------------------------------------------------------------
+
             case "about":
                 // about the creators
                 System.out.println("This game was made by three students attending Hanzehogeschool Groningen");
                 break;
-// ------------------------------------------------------------
-            case "look":
-                // see all items in currentRoom that can be picked
-                // TODO add text for 0 items
-                List<Item> items = currentRoom.getItemsInRoom();
-                for (int i = 0; i < currentRoom.getItemsInRoom().size(); i++) {
-                    System.out.println("You find a " + items.get(i).getName());
-                    System.out.println("Description: " + items.get(i).getDescription());
-                }
-                break;
-// ------------------------------------------------------------
-            case "take":
-                // check if item is in room
-                // if item is in room, remove item from room and add to inventory
-                String itemToAdd = command.getSecondWord();
-                boolean isAdded = false;
-                for (int i = 0; i < currentRoom.getItemsInRoom().size(); i++) {
-                    Item item = currentRoom.getItemsInRoom().get(i);
-                    if (item.getName().equals(itemToAdd)) {
-                        isAdded = player.addToInventory(item);
-                        if (isAdded) {
-                            currentRoom.getItemsInRoom().remove(item);
-                            System.out.println("You now have a " + item.getName());
-                        }
-                        break;
-                    }
-                }
-                if (!isAdded) {
-                    System.out.println("You search " + currentRoom.getShortDescription() +
-                            " thoroughly, but you can't find a " + itemToAdd);
-                }
-                break;
-// ------------------------------------------------------------
-            case "toss":
-                // check if item is in inventory
-                // if in inventory, remove from inventory and add in room
-                String itemNameToRemove = command.getSecondWord();
-                var isRemoved = false;
-                for (int i = 0; i < player.getInventory().size(); i++) {
-                    Item itemInInventory = player.getInventory().get(i);
-                    if (itemInInventory.getName().equals(itemNameToRemove)) {
-                        isRemoved = true;
-                        player.removeFromInventory(itemInInventory);
-                        currentRoom.getItemsInRoom().add(itemInInventory);
-                        System.out.println("You dropped the " + itemInInventory.getName() + " at " + currentRoom.getShortDescription());
-                    }
-                }
-                if (!isRemoved) {
-                    System.out.println("You don't have " + itemNameToRemove);
-                }
-                break;
-// ------------------------------------------------------------
-            case "inventory":
-                // look at inventory get name + description + weight
-                if (player.getInventory().size() > 0) {
-                    for (int i = 0; i < player.getInventory().size(); i++) {
-                        Item item = player.getInventory().get(i);
-                        String itemName = item.getName();
-                        String itemDescription = item.getDescription();
-                        int itemWeight = item.getWeight();
 
-                        System.out.println("Name: " + itemName + ", Description: " + itemDescription + ", Weight: " + itemWeight);
-                    }
-                } else System.out.println("You have nothing in your inventory.");
+            case "look":
+                doLook();
                 break;
-// ------------------------------------------------------------
+
+            case "take":
+                doTake(command.getSecondWord());
+                break;
+
+            case "toss":
+                doToss(command.getSecondWord());
+                break;
+
+            case "inventory":
+                doInventory();
+                break;
+
             case "back":
-                if (room.size() > 0) {
-                    currentRoom = room.pop();
-                    System.out.println(currentRoom.getLongDescription());
-                } else {
-                    System.out.println("You find yourself where you started.");
-                }
+                doBack();
                 break;
-// ------------------------------------------------------------
+
         }
         return wantToQuit;
+    }
+
+    /**
+     * go back one room
+     */
+    private void doBack() {
+        if (room.size() > 0) {
+            currentRoom = room.pop();
+            System.out.println(currentRoom.getLongDescription());
+        } else {
+            System.out.println("You find yourself where you started.");
+        }
+    }
+
+    /**
+     * see all items in currentRoom that can be picked
+     */
+    private void doLook() {
+        List<Item> items = currentRoom.getItemsInRoom();
+
+        if (items.size() == 0) {
+            System.out.println("You don't see anything of use.");
+        } else {
+            for (int i = 0; i < currentRoom.getItemsInRoom().size(); i++) {
+                System.out.println("You find a " + items.get(i).getName());
+                System.out.println("Description: " + items.get(i).getDescription());
+            }
+        }
+    }
+
+    /**
+     * look at inventory get name + description + weight
+     */
+    private void doInventory() {
+        if (player.getInventory().size() > 0) {
+            for (int i = 0; i < player.getInventory().size(); i++) {
+                Item item = player.getInventory().get(i);
+                String itemName = item.getName();
+                String itemDescription = item.getDescription();
+                int itemWeight = item.getWeight();
+
+                System.out.println("Name: " + itemName + ", Description: " + itemDescription + ", Weight: " + itemWeight);
+            }
+        } else System.out.println("You have nothing in your inventory.");
+    }
+
+    /**
+     * check if item is in room
+     * if item is in room, remove item from room and add to inventory
+     */
+    private void doTake(String itemNameToAdd) {
+        boolean isAdded = false;
+
+        for (int i = 0; i < currentRoom.getItemsInRoom().size(); i++) {
+            Item item = currentRoom.getItemsInRoom().get(i);
+
+            if (item.getName().equals(itemNameToAdd)) {
+                isAdded = player.addToInventory(item);
+
+                if (isAdded) {
+                    currentRoom.getItemsInRoom().remove(item);
+                    System.out.println("You now have a " + item.getName());
+                }
+
+                break;
+            }
+        }
+
+        if (!isAdded) {
+            System.out.println("You search " + currentRoom.getShortDescription() +
+                    " thoroughly, but you can't find a " + itemNameToAdd);
+        }
+    }
+
+    /**
+     * check if item is in inventory
+     * if in inventory, remove from inventory and add in room
+     */
+    private void doToss(String itemNameToRemove) {
+        boolean isRemoved = false;
+        for (int i = 0; i < player.getInventory().size(); i++) {
+            Item itemInInventory = player.getInventory().get(i);
+            if (itemInInventory.getName().equals(itemNameToRemove)) {
+                isRemoved = true;
+                player.removeFromInventory(itemInInventory);
+                currentRoom.getItemsInRoom().add(itemInInventory);
+                System.out.println("You dropped the " + itemInInventory.getName() + " at " + currentRoom.getShortDescription());
+            }
+        }
+        if (!isRemoved) {
+            System.out.println("You don't have " + itemNameToRemove);
+        }
     }
 
     // implementations of user commands:
