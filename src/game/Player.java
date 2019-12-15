@@ -45,9 +45,10 @@ public class Player {
         } else if ((item.getWeight() + currentInventoryWeight) > MAX_INVENTORY_WEIGHT) {
             System.out.println("Argh! This " + item.getName() + " is too heavy! You can't carry more!");
             return false;
-        } else
+        } else {
             inventory.add(item);
-        currentInventoryWeight += item.getWeight();
+            currentInventoryWeight += item.getWeight();
+        }
         return true;
     }
 
