@@ -62,3 +62,6 @@ public class Player {
         currentInventoryWeight -= item.getWeight();
     }
 }
+
+
+//hoi
