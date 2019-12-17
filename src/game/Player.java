@@ -39,12 +39,15 @@ public class Player {
      * it won't be added to inventory.
      */
     public boolean addToInventory(Item item) {
+        // check bool pickUp
         if (!item.isPickUp()) {
             System.out.println("This " + item.getName() + " seems to be stuck in place...");
             return false;
+            // check weight limits
         } else if ((item.getWeight() + currentInventoryWeight) > MAX_INVENTORY_WEIGHT) {
             System.out.println("Argh! This " + item.getName() + " is too heavy! You can't carry more!");
             return false;
+            // add item if pickUp == true and weight total weight is not >5
         } else {
             inventory.add(item);
             currentInventoryWeight += item.getWeight();
@@ -62,6 +65,3 @@ public class Player {
         currentInventoryWeight -= item.getWeight();
     }
 }
-
-
-//hoi
