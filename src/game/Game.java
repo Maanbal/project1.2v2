@@ -75,6 +75,11 @@ public class Game {
         currentRoom = outside;  // start game outside
     }
 
+    private void createRooms2(){
+        Room lobby, westWing, firstAid, operatingRoom, radiology,
+                eastWing, cafeteria, pharmacy, infirmary, staircase, roof, basement, mortuary;
+    }
+    
     /**
      * Main play routine.  Loops until end of play.
      */
