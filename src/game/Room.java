@@ -1,6 +1,5 @@
 package src.game;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +20,8 @@ import java.util.HashMap;
  */
 
 public class Room {
+    private boolean isLocked;
+    private String name;
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
     private List<Item> itemsInRoom;
@@ -32,10 +33,38 @@ public class Room {
      *
      * @param description The room's description.
      */
-    public Room(String description) {
+    public Room(String name, String description, boolean isLocked) {
+        this.isLocked = isLocked;
+        this.name = name;
         this.description = description;
         exits = new HashMap<>();
         itemsInRoom = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Getter
+     *
+     * @return boolean isLocked
+     */
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    /**
+     * Setter
+     *
+     * @param locked
+     */
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
     /**
@@ -109,6 +138,10 @@ public class Room {
      */
     public Room getExit(String direction) {
         return exits.get(direction);
+    }
+
+    public HashMap<String, Room> getExits() {
+        return exits;
     }
 }
 

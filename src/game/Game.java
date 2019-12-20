@@ -1,6 +1,7 @@
 package src.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
@@ -41,22 +42,43 @@ public class Game {
      * Create all the rooms and link their exits together.
      */
     private void createRooms() {
+        // create item lists
+        List<Item> outsideItems = new ArrayList<>();
+        List<Item> theaterItems = new ArrayList<>();
+        List<Item> pubItems = new ArrayList<>();
+        List<Item> labItems = new ArrayList<>();
+        List<Item> officeItems = new ArrayList<>();
+
+        // create items
+
+        Item key = new Item("key", "A brass key", 1, true, true, true);
+        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true, false, false);
+        Item plant = new Item("plant", "A withering plant", 2, false, false, false);
+        Item rock = new Item("rock", "A big rock", 10, true, false, true);
+        Item chair = new Item("chair", "A black chair", 3, true, false, false);
+
+        // put items in list
+
+        outsideItems.add(key);
+        outsideItems.add(book);
+        outsideItems.add(plant);
+        theaterItems.add(rock);
+        theaterItems.add(chair);
+
         Room outside, theater, pub, lab, office;
 
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        Item key = new Item("key", "A brass key", 1, true, true);
-        Item book = new Item("book", "Dreams of Paradise", 8, true, false);
 
-        List<Item> outsideItems = new ArrayList<>();
-        outsideItems.add(key);
-        outsideItems.add(book);
-
+        outside = new Room("outside", "outside the main entrance of the university", false);
         outside.setItemsInRoom(outsideItems);
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        theater = new Room("theater", "in a lecture theater", true);
+        theater.setItemsInRoom(theaterItems);
+        pub = new Room("pub", "in the campus pub", false);
+        pub.setItemsInRoom(pubItems);
+        lab = new Room("lab", "in a computing lab", false);
+        lab.setItemsInRoom(labItems);
+        office = new Room("office", "in the computing admin office", false);
+        office.setItemsInRoom(officeItems);
 
         // initialise room exits
         outside.setExit("east", theater);
@@ -75,11 +97,11 @@ public class Game {
         currentRoom = outside;  // start game outside
     }
 
-    private void createRooms2(){
+    private void createRooms2() {
         Room lobby, westWing, firstAid, operatingRoom, radiology,
                 eastWing, cafeteria, pharmacy, infirmary, staircase, roof, basement, mortuary;
     }
-    
+
     /**
      * Main play routine.  Loops until end of play.
      */
@@ -132,6 +154,7 @@ public class Game {
                 break;
 
             case "go":
+
                 // go command
                 goRoom(command);
                 break;
@@ -166,9 +189,15 @@ public class Game {
                 doBack();
                 break;
 
+            case "use":
+                doUse(command.getSecondWord());
+                break;
+
         }
         return wantToQuit;
     }
+
+
 // implementations of user commands:
 
     /**
@@ -192,12 +221,12 @@ public class Game {
 
         // message if no items are found
         if (items.size() == 0) {
-            System.out.println("You don't see anything of use.");
+            System.out.println("You look around. You don't see anything of use.");
         } else {
             // if items are found, return name and description of items
+            System.out.println("You look around.");
             for (int i = 0; i < currentRoom.getItemsInRoom().size(); i++) {
-                System.out.println("You find a " + items.get(i).getName());
-                System.out.println("Description: " + items.get(i).getDescription());
+                System.out.println("You find a " + items.get(i).getName() + ". Description: " + items.get(i).getDescription());
             }
         }
     }
@@ -294,54 +323,108 @@ public class Game {
     }
 
     /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the
-     * command words.
-     */
-    private void printHelp() {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        parser.showCommands();
-    }
-
-    /**
-     * Try to in to one direction. If there is an exit, enter the new
-     * room, otherwise print an error message.
-     */
-    private void goRoom(Command command) {
-        if (!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-        String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        } else {
-            room.push(currentRoom);
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
-        }
-    }
-
-    /**
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
+     * first checks if player has anything in inventory
+     * if inventory size > 0, checks if item input == item in inventory
+     * then checks if item is in inventory, if not, message to player
+     * then checks Item bool isKey
+     * if bool isKey == true then look around to see if any rooms are locked
+     * if found a locked door, unlock the door, and remove key from inventory, message to player
+     * if no locked door is found, message to player
+     * then check Item book isUsable
+     * if bool isUsable == true, use item and remove from inventory, message to player
      *
-     * @return true, if this command quits the game, false otherwise.
+     * @param itemNameToUse item input
      */
-    private boolean quit(Command command) {
-        if (command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
+    private void doUse(String itemNameToUse) {
+        boolean isFound = false;
+        if (player.getInventory().size() == 0) {
+            System.out.println("You have nothing to use!");
+
         } else {
-            return true;  // signal that we want to quit
+            for (int i = 0; i < player.getInventory().size(); i++) {
+                Item itemInInventory = player.getInventory().get(i);
+
+                if (itemInInventory.getName().equals(itemNameToUse)) {
+                    isFound = true;
+                    if (itemInInventory.isKey()) {
+                        for (Room n : currentRoom.getExits().values()) {
+                            if (n.isLocked()) {
+
+                                n.setLocked(false);
+                                player.removeFromInventory(itemInInventory);
+                                System.out.println("You used the " + itemNameToUse + " on the " + n.getName() + " door.");
+                                break;
+
+                            } else {
+                                System.out.println("No need to use the " + itemNameToUse + "!");
+                            }
+                        }
+                    } else if (itemInInventory.isUsable()) {
+
+                        player.removeFromInventory(itemInInventory);
+                        System.out.println("You used " + itemNameToUse);
+                    } else {
+                        System.out.println("You can't use this item.");
+                    }
+                }
+            }
+            if (!isFound) {
+                System.out.println("You don't have a " + itemNameToUse + ".");
+            }
         }
     }
-}
+
+        /**
+         * Print out some help information.
+         * Here we print some stupid, cryptic message and a list of the
+         * command words.
+         */
+        private void printHelp () {
+            System.out.println("You are lost. You are alone. You wander");
+            System.out.println("around at the university.");
+            System.out.println();
+            System.out.println("Your command words are:");
+            parser.showCommands();
+        }
+
+        /**
+         * Try to in to one direction. If there is an exit, enter the new
+         * room, otherwise print an error message.
+         */
+        private void goRoom (Command command){
+            if (!command.hasSecondWord()) {
+                // if there is no second word, we don't know where to go...
+                System.out.println("Go where?");
+                return;
+            }
+            String direction = command.getSecondWord();
+
+            // Try to leave current room.
+            Room nextRoom = currentRoom.getExit(direction);
+
+            if (nextRoom == null) {
+                System.out.println("There is no door!");
+            } else if (nextRoom.isLocked()) {
+                System.out.println("The door is locked!");
+            } else {
+                room.push(currentRoom);
+                currentRoom = nextRoom;
+                System.out.println(currentRoom.getLongDescription());
+            }
+        }
+
+        /**
+         * "Quit" was entered. Check the rest of the command to see
+         * whether we really quit the game.
+         *
+         * @return true, if this command quits the game, false otherwise.
+         */
+        private boolean quit (Command command){
+            if (command.hasSecondWord()) {
+                System.out.println("Quit what?");
+                return false;
+            } else {
+                return true;  // signal that we want to quit
+            }
+        }
+    }
