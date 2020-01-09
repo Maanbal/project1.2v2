@@ -1,4 +1,4 @@
-Locatie: ziekenhuis
+Location: Hospital
 probleem: stroomuitval
 Wincondition: druk op de knop om de stroom weer aan te zetten / erachter komen wat er met je gebeurd is
 Kamers:
@@ -20,7 +20,6 @@ Spel met kamers
 Personage
     acties
     draaglimiet
-
 
 Items
     functie
