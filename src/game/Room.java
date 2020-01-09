@@ -61,7 +61,7 @@ public class Room {
     /**
      * Setter
      *
-     * @param locked
+     * @param locked lock or unlock the room with this bool
      */
     public void setLocked(boolean locked) {
         isLocked = locked;
@@ -79,7 +79,7 @@ public class Room {
     /**
      * Setter
      *
-     * @param itemsInRoom
+     * @param itemsInRoom add items to the room
      */
     public void setItemsInRoom(List<Item> itemsInRoom) {
         this.itemsInRoom = itemsInRoom;
@@ -121,12 +121,12 @@ public class Room {
      * @return Details of the room's exits.
      */
     private String getExitString() {
-        String returnString = "Exits:";
+        StringBuilder returnString = new StringBuilder("Exits:");
         Set<String> keys = exits.keySet();
         for (String exit : keys) {
-            returnString += " " + exit;
+            returnString.append(" ").append(exit);
         }
-        return returnString;
+        return returnString.toString();
     }
 
     /**

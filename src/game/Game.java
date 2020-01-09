@@ -1,7 +1,6 @@
 package src.game;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
@@ -49,13 +48,15 @@ public class Game {
         List<Item> labItems = new ArrayList<>();
         List<Item> officeItems = new ArrayList<>();
 
-        // create items
+        // create items of the entire game
 
         Item key = new Item("key", "A brass key", 1, true, true, true);
         Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true, false, false);
         Item plant = new Item("plant", "A withering plant", 2, false, false, false);
         Item rock = new Item("rock", "A big rock", 10, true, false, true);
         Item chair = new Item("chair", "A black chair", 3, true, false, false);
+        Item laptop = new Item("laptop", "It looks broken", 4, true, false, true);
+        Item pie = new Item("prisoner's pie", "Could something be inside it?", 5, true, false, true);
 
         // put items in list
 
@@ -64,6 +65,8 @@ public class Game {
         outsideItems.add(plant);
         theaterItems.add(rock);
         theaterItems.add(chair);
+        officeItems.add(laptop);
+        labItems.add(pie);
 
         Room outside, theater, pub, lab, office;
 
@@ -125,7 +128,6 @@ public class Game {
     private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println("Type 'about' to find out about the creators of this game.");
         System.out.println();
@@ -170,33 +172,55 @@ public class Game {
                 break;
 
             case "look":
+                // look around room, return items
                 doLook();
                 break;
 
             case "take":
-                doTake(command.getSecondWord());
+                // check if there's a third word, concat with second word if third word is present,
+                // try to put player's input in inventory
+                if (command.getThirdWord() != null) {
+                    String conCommand = command.getSecondWord().concat(" " + command.getThirdWord());
+                    doTake(conCommand);
+                } else {
+                    doTake(command.getSecondWord());
+                }
                 break;
 
             case "toss":
-                doToss(command.getSecondWord());
+                // check if there's a third word first, concat with second word if third word is present,
+                // toss player's input from inventory
+                if (command.getThirdWord() != null) {
+                    String conCommand = command.getSecondWord().concat(" " + command.getThirdWord());
+                    doToss(conCommand);
+                } else {
+                    doToss(command.getSecondWord());
+                }
                 break;
 
             case "inventory":
+                // check player inventory
                 doInventory();
                 break;
 
             case "back":
+                // go back room from where player came
                 doBack();
                 break;
 
             case "use":
-                doUse(command.getSecondWord());
+                // use item in inventory
+                if (command.getThirdWord() != null) {
+                    String conCommand = command.getSecondWord().concat(" " + command.getThirdWord());
+                    doUse(conCommand);
+                } else {
+                    doUse(command.getSecondWord());
+                }
                 break;
 
         }
         return wantToQuit;
     }
-
 
 // implementations of user commands:
 
@@ -336,95 +360,118 @@ public class Game {
      * @param itemNameToUse item input
      */
     private void doUse(String itemNameToUse) {
-        boolean isFound = false;
-        if (player.getInventory().size() == 0) {
-            System.out.println("You have nothing to use!");
-
+        if (itemNameToUse == null) {
+            System.out.println("Use what?");
         } else {
-            for (int i = 0; i < player.getInventory().size(); i++) {
-                Item itemInInventory = player.getInventory().get(i);
+            boolean isFound = false;    // bool to avoid a line print later in this method if item is found in inventory
 
-                if (itemInInventory.getName().equals(itemNameToUse)) {
-                    isFound = true;
-                    if (itemInInventory.isKey()) {
-                        for (Room n : currentRoom.getExits().values()) {
-                            if (n.isLocked()) {
+            // if no items in inventory, no use for this method.
+            if (player.getInventory().size() == 0) {
+                System.out.println("You have nothing to use!");
 
-                                n.setLocked(false);
-                                player.removeFromInventory(itemInInventory);
-                                System.out.println("You used the " + itemNameToUse + " on the " + n.getName() + " door.");
-                                break;
+            } else {
+                // loop to find item in player inventory
+                for (int i = 0; i < player.getInventory().size(); i++) {
+                    Item itemInInventory = player.getInventory().get(i);
 
-                            } else {
+                    // check if name of item == item names in inventory
+                    if (itemInInventory.getName().equals(itemNameToUse)) {
+                        isFound = true;
+
+                        // if item has isKey true, it's a key and can therefore unlock. let's not make it more complicated
+                        // than necessary pl0x
+                        if (itemInInventory.isKey()) {
+                            // boolean to prevent multiple messages
+                            boolean keyUnused = false;
+                            // unlock any locked door, remove key from inventory, message player, end method
+                            for (Room n : currentRoom.getExits().values()) {
+                                if (n.isLocked()) {
+
+                                    n.setLocked(false);
+                                    player.removeFromInventory(itemInInventory);
+                                    System.out.println("You used the " + itemNameToUse + " on the " + n.getName() + " door.");
+                                    break;
+
+                                } else {
+                                    // no key usage was found, set bool to true
+                                    keyUnused = true;
+                                }
+                            }
+                            if (keyUnused){
+                                // no locked doors found, message player
                                 System.out.println("No need to use the " + itemNameToUse + "!");
                             }
-                        }
-                    } else if (itemInInventory.isUsable()) {
+                            // check for isUsable bool, if true, remove item, message player
+                        } else if (itemInInventory.isUsable()) {
 
-                        player.removeFromInventory(itemInInventory);
-                        System.out.println("You used " + itemNameToUse);
-                    } else {
-                        System.out.println("You can't use this item.");
+                            itemInInventory.turnIntoKey();
+                            System.out.println("You used " + itemNameToUse);
+                            System.out.println("It's a key!");
+                        } else {
+                            // isUsable bool != true, message player
+                            System.out.println("You can't use this item.");
+                        }
                     }
                 }
-            }
-            if (!isFound) {
-                System.out.println("You don't have a " + itemNameToUse + ".");
-            }
-        }
-    }
-
-        /**
-         * Print out some help information.
-         * Here we print some stupid, cryptic message and a list of the
-         * command words.
-         */
-        private void printHelp () {
-            System.out.println("You are lost. You are alone. You wander");
-            System.out.println("around at the university.");
-            System.out.println();
-            System.out.println("Your command words are:");
-            parser.showCommands();
-        }
-
-        /**
-         * Try to in to one direction. If there is an exit, enter the new
-         * room, otherwise print an error message.
-         */
-        private void goRoom (Command command){
-            if (!command.hasSecondWord()) {
-                // if there is no second word, we don't know where to go...
-                System.out.println("Go where?");
-                return;
-            }
-            String direction = command.getSecondWord();
-
-            // Try to leave current room.
-            Room nextRoom = currentRoom.getExit(direction);
-
-            if (nextRoom == null) {
-                System.out.println("There is no door!");
-            } else if (nextRoom.isLocked()) {
-                System.out.println("The door is locked!");
-            } else {
-                room.push(currentRoom);
-                currentRoom = nextRoom;
-                System.out.println(currentRoom.getLongDescription());
-            }
-        }
-
-        /**
-         * "Quit" was entered. Check the rest of the command to see
-         * whether we really quit the game.
-         *
-         * @return true, if this command quits the game, false otherwise.
-         */
-        private boolean quit (Command command){
-            if (command.hasSecondWord()) {
-                System.out.println("Quit what?");
-                return false;
-            } else {
-                return true;  // signal that we want to quit
+                // if item wasn't found in inventory, message player.
+                if (!isFound) {
+                    System.out.println("You don't have a " + itemNameToUse + ".");
+                }
             }
         }
     }
+
+    /**
+     * Print out some help information.
+     * Here we print some stupid, cryptic message and a list of the
+     * command words.
+     */
+    private void printHelp() {
+        System.out.println("You are lost. You are alone. You wander");
+        System.out.println("around at the university.");
+        System.out.println();
+        System.out.println("Your command words are:");
+        parser.showCommands();
+    }
+
+    /**
+     * Try to in to one direction. If there is an exit, enter the new
+     * room, otherwise print an error message.
+     */
+    private void goRoom(Command command) {
+        if (!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Go where?");
+            return;
+        }
+        String direction = command.getSecondWord();
+
+        // Try to leave current room.
+        Room nextRoom = currentRoom.getExit(direction);
+
+        if (nextRoom == null) {
+            System.out.println("There is no door!");
+        } else if (nextRoom.isLocked()) {
+            System.out.println("The door is locked!");
+        } else {
+            room.push(currentRoom);
+            currentRoom = nextRoom;
+            System.out.println(currentRoom.getLongDescription());
+        }
+    }
+
+    /**
+     * "Quit" was entered. Check the rest of the command to see
+     * whether we really quit the game.
+     *
+     * @return true, if this command quits the game, false otherwise.
+     */
+    private boolean quit(Command command) {
+        if (command.hasSecondWord()) {
+            System.out.println("Quit what?");
+            return false;
+        } else {
+            return true;  // signal that we want to quit
+        }
+    }
+}

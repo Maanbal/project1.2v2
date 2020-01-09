@@ -22,6 +22,7 @@ package src.game;
 public class Command {
     private String commandWord;
     private String secondWord;
+    private String thirdWord;
 
     /**
      * Create a command object. First and second word must be supplied, but
@@ -30,10 +31,12 @@ public class Command {
      * @param firstWord  The first word of the command. Null if the command
      *                   was not recognised.
      * @param secondWord The second word of the command.
+     * @param thirdWord  third word of command
      */
-    public Command(String firstWord, String secondWord) {
+    public Command(String firstWord, String secondWord, String thirdWord) {
         commandWord = firstWord;
         this.secondWord = secondWord;
+        this.thirdWord = thirdWord;
     }
 
     /**
@@ -55,6 +58,14 @@ public class Command {
     }
 
     /**
+     * @return The third word of this command. Returns null if there was no
+     * third word.
+     */
+    public String getThirdWord() {
+        return thirdWord;
+    }
+
+    /**
      * @return true if this command was not understood.
      */
     public boolean isUnknown() {
@@ -67,5 +78,6 @@ public class Command {
     public boolean hasSecondWord() {
         return (secondWord != null);
     }
+
 }
 

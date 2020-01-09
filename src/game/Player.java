@@ -24,7 +24,7 @@ public class Player {
     /**
      * Setter
      *
-     * @param inventory
+     * @param inventory ArrayList inventory
      */
     public void setInventory(ArrayList<Item> inventory) {
         this.inventory = inventory;
@@ -34,7 +34,7 @@ public class Player {
      * Checks item is not over weight limit and if it can be picked up. If not too heavy and can be picked up,
      * item is added to player's inventory.
      *
-     * @param item
+     * @param item item that should be added
      * @return boolean so that if item was searched & found but couldn't be added because of isPickUp/weight flags,
      * it won't be added to inventory.
      */
@@ -58,7 +58,7 @@ public class Player {
     /**
      * removes item from inventory and updates currentInventoryWeight
      *
-     * @param item
+     * @param item item to be removed
      */
     public void removeFromInventory(Item item) {
         inventory.remove(item);

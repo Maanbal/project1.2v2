@@ -9,6 +9,7 @@ public class Item {
     private boolean isUsable;
 
     public Item(String name, String description, int weight, boolean pickUp, boolean isKey, boolean isUsable) {
+        // TODO int keyID??
         this.name = name;
         this.description = description;
         this.weight = weight;
@@ -63,5 +64,14 @@ public class Item {
 
     public void setUsable(boolean usable) {
         isUsable = usable;
+    }
+
+    public void turnIntoKey(){
+        this.setName("key");
+        this.setDescription("It's a key!");
+        this.setKey(true);
+        this.setWeight(1);
+        this.setUsable(false);
+        this.setPickUp(true);
     }
 }
