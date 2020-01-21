@@ -16,6 +16,12 @@ public class ItemKey extends Item implements ItemUsable {
         this.keyID = keyID;
     }
 
+    /**
+     * key method. Unlocks door if it can.
+     * @param player
+     * @param room
+     * @return return if item needs to be removed from inventory
+     */
     @Override
     public boolean onUse(Player player, Room room) {
         // unlock any locked door, remove key from inventory, message player, end method

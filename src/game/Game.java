@@ -62,7 +62,7 @@ public class Game {
         Item d6 = new ItemDie("d6", "It's a six sided die!", 1, 6);
         Item d20 = new ItemDie("d20", "It's a twenty sided die!", 1, 20);
 
-        // put items in list
+        // put items in room list
 
         outsideItems.add(key);
         outsideItems.add(keyuggo);
@@ -359,12 +359,7 @@ public class Game {
      * first checks if player has anything in inventory
      * if inventory size > 0, checks if item input == item in inventory
      * then checks if item is in inventory, if not, message to player
-     * then checks Item bool isKey
-     * if bool isKey == true then look around to see if any rooms are locked
-     * if found a locked door, unlock the door, and remove key from inventory, message to player
-     * if no locked door is found, message to player
-     * then check Item book isUsable
-     * if bool isUsable == true, use item and remove from inventory, message to player
+     * if item implements ItemUsable, the item will be used accordingly, and possibly removed from inventory
      *
      * @param itemNameToUse item input
      */

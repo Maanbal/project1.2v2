@@ -15,6 +15,12 @@ public class LockedRoom extends Room {
         return isLocked;
     }
 
+    /**
+     * Try to unlock a locked door with key.
+     *
+     * @param keyID
+     * @return return if door was unlocked
+     */
     public boolean tryUnlock(int keyID) {
         if (keyID == lockID) {
             if (isLocked) {
