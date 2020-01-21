@@ -49,9 +49,9 @@ public class Game {
         List<Item> officeItems = new ArrayList<>();
 
         // create items for the entire game
-        // keyID == 0 is not key, keyID > 0 is a key
 
         Item key = new ItemKey("key", "A brass key", 1, 1);
+        Item keyuggo = new ItemKey("key two", "A bronze key", 1, 2);
         Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true);
         Item plant = new Item("plant", "A withering plant", 2, false);
         Item rock = new Item("rock", "A big rock", 10, true);
@@ -65,6 +65,7 @@ public class Game {
         // put items in list
 
         outsideItems.add(key);
+        outsideItems.add(keyuggo);
         outsideItems.add(book);
         outsideItems.add(plant);
         outsideItems.add(d6);
@@ -80,15 +81,15 @@ public class Game {
         // lockID == 0 is an open room, lockID > 0 is a locked room
         // to make keys and rooms corresponding, make lockID and keyID the same
 
-        outside = new Room("outside", "outside the main entrance of the university", 0);
+        outside = new Room("outside", "outside the main entrance of the university");
         outside.setItemsInRoom(outsideItems);
-        theater = new Room("theater", "in a lecture theater", 1);
+        theater = new LockedRoom("theater", "in a lecture theater", 1);
         theater.setItemsInRoom(theaterItems);
-        pub = new Room("pub", "in the campus pub", 0);
+        pub = new Room("pub", "in the campus pub");
         pub.setItemsInRoom(pubItems);
-        lab = new Room("lab", "in a computing lab", 0);
+        lab = new Room("lab", "in a computing lab");
         lab.setItemsInRoom(labItems);
-        office = new Room("office", "in the computing admin office", 0);
+        office = new Room("office", "in the computing admin office");
         office.setItemsInRoom(officeItems);
 
         // initialise room exits
@@ -436,7 +437,7 @@ public class Game {
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
-        } else if (nextRoom.isLocked() > 0) {
+        } else if (nextRoom instanceof LockedRoom && ((LockedRoom)nextRoom).isLocked()) {
             System.out.println("The door is locked!");
         } else {
             room.push(currentRoom);
