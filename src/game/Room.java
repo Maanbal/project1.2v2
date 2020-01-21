@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 
 public class Room {
-    private boolean isLocked;
+    private int lockID;
     private String name;
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
@@ -33,8 +33,8 @@ public class Room {
      *
      * @param description The room's description.
      */
-    public Room(String name, String description, boolean isLocked) {
-        this.isLocked = isLocked;
+    public Room(String name, String description, int lockID) {
+        this.lockID = lockID;
         this.name = name;
         this.description = description;
         exits = new HashMap<>();
@@ -54,8 +54,8 @@ public class Room {
      *
      * @return boolean isLocked
      */
-    public boolean isLocked() {
-        return isLocked;
+    public int isLocked() {
+        return lockID;
     }
 
     /**
@@ -63,8 +63,8 @@ public class Room {
      *
      * @param locked lock or unlock the room with this bool
      */
-    public void setLocked(boolean locked) {
-        isLocked = locked;
+    public void setLocked(int locked) {
+        lockID = locked;
     }
 
     /**
@@ -84,7 +84,14 @@ public class Room {
     public void setItemsInRoom(List<Item> itemsInRoom) {
         this.itemsInRoom = itemsInRoom;
     }
-
+    
+    /**
+     * Add single item in room
+     */
+    public void addItem(Item item){
+        itemsInRoom.add(item);
+    }
+    
     /**
      * Define an exit from this room.
      *

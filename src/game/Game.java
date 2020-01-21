@@ -31,94 +31,35 @@ public class Game {
      * Create the game and initialise its internal map.
      */
     public Game() {
-        // createRooms();
-        createRooms2();
+        createRooms();
         parser = new Parser();
         room = new Stack<>();
         player = new Player();
-    }
-
-    /**
-     * Create all the rooms and link their exits together.
-     */
-    private void createRooms() {
-        // create item lists
-        List<Item> outsideItems = new ArrayList<>();
-        List<Item> theaterItems = new ArrayList<>();
-        List<Item> pubItems = new ArrayList<>();
-        List<Item> labItems = new ArrayList<>();
-        List<Item> officeItems = new ArrayList<>();
-
-        // create items of the entire game
-
-        Item key = new Item("key", "A brass key", 1, true, true, true);
-        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true, false, false);
-        Item plant = new Item("plant", "A withering plant", 2, false, false, false);
-        Item rock = new Item("rock", "A big rock", 10, true, false, true);
-        Item chair = new Item("chair", "A black chair", 3, true, false, false);
-        Item laptop = new Item("laptop", "It looks broken", 4, true, false, true);
-        Item pie = new Item("prisoner's pie", "Could something be inside it?", 5, true, false, true);
-
-        // put items in list
-
-        outsideItems.add(key);
-        outsideItems.add(book);
-        outsideItems.add(plant);
-        theaterItems.add(rock);
-        theaterItems.add(chair);
-        officeItems.add(laptop);
-        labItems.add(pie);
-
-        Room outside, theater, pub, lab, office;
-
-        // CREATE ROOMS, OLD
-        outside = new Room("outside", "outside the main entrance of the university", false);
-        outside.setItemsInRoom(outsideItems);
-        theater = new Room("theater", "in a lecture theater", true);
-        theater.setItemsInRoom(theaterItems);
-        pub = new Room("pub", "in the campus pub", false);
-        pub.setItemsInRoom(pubItems);
-        lab = new Room("lab", "in a computing lab", false);
-        lab.setItemsInRoom(labItems);
-        office = new Room("office", "in the computing admin office", false);
-        office.setItemsInRoom(officeItems);
-
-        // INITIALISE EXITS, OLD
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-        theater.setExit("west", outside);
-        pub.setExit("east", outside);
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
     }
     
     /**
      * Create all rooms, add descriptions, set isLocked
      */
-    private void createRooms2() {
+    private void createRooms() {
         Room lobby, eastWing, cafeteria, infirmary, pharmacy, westWing, radiology, surgicalWard, emergencyRoom,
                 stairwell, roof, basement, mortuary;
         // CREATE ROOMS
-        lobby = new Room("lobby", "the heart of the hospital", false);
+        lobby = new Room("lobby", "the heart of the hospital", 0);
         // East Wing
-        eastWing = new Room("east wing", "a big hall with colorful walls", false);
-        cafeteria = new Room("cafeteria", "a lunchroom with eating tables and a kitchen", false);
-        infirmary = new Room("infirmary", "lots of empty hospital beds", false);
-        pharmacy = new Room("pharmacy", "a drug store, there seem to be some medicine left", false);
+        eastWing = new Room("east wing", "a big hall with colorful walls", 0);
+        cafeteria = new Room("cafeteria", "a lunchroom with eating tables and a kitchen", 0);
+        infirmary = new Room("infirmary", "lots of empty hospital beds", 0);
+        pharmacy = new Room("pharmacy", "a drug store, there seem to be some medicine left", 0);
         // West Wing
-        westWing = new Room("west wing", "a gloomy, poorly lit hall", true);
-        radiology = new Room("radiology","machines that are used to make x-rays", false);
-        surgicalWard = new Room("surgical ward","hospital beds and heart monitors. you see some dried blood stains", false);
-        emergencyRoom = new Room("emergency room","a single operation table with surgical devices around it", true);
+        westWing = new Room("west wing", "a gloomy, poorly lit hall", 1);
+        radiology = new Room("radiology","machines that are used to make x-rays", 0);
+        surgicalWard = new Room("surgical ward","hospital beds and heart monitors. you see some dried blood stains", 0);
+        emergencyRoom = new Room("emergency room","a single operation table with surgical devices around it", 2);
         // Roof and Basement
-        stairwell = new Room("stairwell", "stairs leading up and down", true);
-        roof = new Room("roof", "there seems to be nothing here", false);
-        basement = new Room("basement", "shelves, cabinets and cardboard boxes", false);
-        mortuary = new Room("mortuary", "large, metal drawers. There's an unpleasant smell in this place", true);
+        stairwell = new Room("stairwell", "stairs leading up and down", 3);
+        roof = new Room("roof", "there seems to be nothing here", 0);
+        basement = new Room("basement", "shelves, cabinets and cardboard boxes", 0);
+        mortuary = new Room("mortuary", "large, metal drawers. There's an unpleasant smell in this place", 4);
         
         // CREATE EXITS
         lobby.setExit("east", eastWing);
@@ -149,6 +90,30 @@ public class Game {
         basement.setExit("east", mortuary);
         mortuary.setExit("west", basement);
         
+        // CREATE ITEMS
+        Item key = new ItemKey("key", "A brass key", 1, 1);
+        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true);
+        Item plant = new Item("plant", "A withering plant", 2, false);
+        Item rock = new Item("rock", "A big rock", 10, true);
+        Item chair = new Item("chair", "A black chair", 3, true);
+        Item laptop = new ItemText("laptop", "It looks broken", 4, "It's just a blue screen...");
+        Item pie = new ItemTransformer("prisoner's pie", "Could something be inside it?", 5,
+                "You eat the pie... You find a key!", key);
+        Item d6 = new ItemDie("d6", "It's a six sided die!", 1, 6);
+        Item d20 = new ItemDie("d20", "It's a twenty sided die!", 1, 20);
+        
+        // ADD ITEMS TO ROOMS
+        lobby.addItem(key);
+        infirmary.addItem(book);
+        pharmacy.addItem(plant);
+        westWing.addItem(rock);
+        radiology.addItem(chair);
+        surgicalWard.addItem(laptop);
+        emergencyRoom.addItem(pie);
+        stairwell.addItem(d6);
+        basement.addItem(d20);
+        
+        currentRoom = infirmary;
     }
 
     /**
