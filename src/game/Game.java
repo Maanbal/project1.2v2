@@ -49,21 +49,26 @@ public class Game {
         List<Item> officeItems = new ArrayList<>();
 
         // create items for the entire game
-        // keyID == 0 is an unlocked room, keyID > 0 is a locked room
+        // keyID == 0 is not key, keyID > 0 is a key
 
-        Item key = new Item("key", "A brass key", 1, true, 1, true);
-        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true, 0, false);
-        Item plant = new Item("plant", "A withering plant", 2, false, 0, false);
-        Item rock = new Item("rock", "A big rock", 10, true, 0, true);
-        Item chair = new Item("chair", "A black chair", 3, true, 0, false);
-        Item laptop = new Item("laptop", "It looks broken", 4, true, 0, true);
-        Item pie = new Item("prisoner's pie", "Could something be inside it?", 5, true, 0, true);
+        Item key = new ItemKey("key", "A brass key", 1, 1);
+        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true);
+        Item plant = new Item("plant", "A withering plant", 2, false);
+        Item rock = new Item("rock", "A big rock", 10, true);
+        Item chair = new Item("chair", "A black chair", 3, true);
+        Item laptop = new ItemText("laptop", "It looks broken", 4, "It's just a blue screen...");
+        Item pie = new ItemTransformer("prisoner's pie", "Could something be inside it?", 5,
+                "You eat the pie... You find a key!", key);
+        Item d6 = new ItemDie("d6", "It's a six sided die!", 1, 6);
+        Item d20 = new ItemDie("d20", "It's a twenty sided die!", 1, 20);
 
         // put items in list
 
         outsideItems.add(key);
         outsideItems.add(book);
         outsideItems.add(plant);
+        outsideItems.add(d6);
+        outsideItems.add(d20);
         theaterItems.add(rock);
         theaterItems.add(chair);
         officeItems.add(laptop);
@@ -381,37 +386,13 @@ public class Game {
                     if (itemInInventory.getName().equals(itemNameToUse)) {
                         isFound = true;
 
-                        // if item has isKey true, it's a key and can therefore unlock. let's not make it more complicated
-                        // than necessary pl0x
-                        if (itemInInventory.getKeyID() > 0) {
-                            // boolean to prevent multiple messages
-                            boolean keyUnused = false;
-                            // unlock any locked door, remove key from inventory, message player, end method
-                            for (Room n : currentRoom.getExits().values()) {
-                                if (n.isLocked() == itemInInventory.getKeyID()) {
-
-                                    n.setLocked(0);
-                                    player.removeFromInventory(itemInInventory);
-                                    System.out.println("You used the " + itemNameToUse + " on the " + n.getName() + " door.");
-                                    break;
-
-                                } else {
-                                    // no key usage was found, set bool to true
-                                    keyUnused = true;
-                                }
+                        if (itemInInventory instanceof ItemUsable) {
+                            ItemUsable item = (ItemUsable) itemInInventory;
+                            boolean isUsed = item.onUse(player, currentRoom);
+                            if (isUsed) {
+                                player.removeFromInventory(itemInInventory);
                             }
-                            if (keyUnused){
-                                // no locked doors found, message player
-                                System.out.println(itemNameToUse + " doesn't fit in any locks!");
-                            }
-                            // check for isUsable bool, if true, remove item, message player
-                        } else if (itemInInventory.isUsable()) {
-
-                            //itemInInventory.turnIntoKey();
-                            System.out.println("You used " + itemNameToUse);
-                            System.out.println("It's a key!");
                         } else {
-                            // isUsable bool != true, message player
                             System.out.println("You can't use this item.");
                         }
                     }
@@ -422,6 +403,7 @@ public class Game {
                 }
             }
         }
+
     }
 
     /**
