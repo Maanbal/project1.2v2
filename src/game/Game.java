@@ -48,15 +48,16 @@ public class Game {
         List<Item> labItems = new ArrayList<>();
         List<Item> officeItems = new ArrayList<>();
 
-        // create items of the entire game
+        // create items for the entire game
+        // keyID == 0 is an unlocked room, keyID > 0 is a locked room
 
-        Item key = new Item("key", "A brass key", 1, true, true, true);
-        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true, false, false);
-        Item plant = new Item("plant", "A withering plant", 2, false, false, false);
-        Item rock = new Item("rock", "A big rock", 10, true, false, true);
-        Item chair = new Item("chair", "A black chair", 3, true, false, false);
-        Item laptop = new Item("laptop", "It looks broken", 4, true, false, true);
-        Item pie = new Item("prisoner's pie", "Could something be inside it?", 5, true, false, true);
+        Item key = new Item("key", "A brass key", 1, true, 1, true);
+        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true, 0, false);
+        Item plant = new Item("plant", "A withering plant", 2, false, 0, false);
+        Item rock = new Item("rock", "A big rock", 10, true, 0, true);
+        Item chair = new Item("chair", "A black chair", 3, true, 0, false);
+        Item laptop = new Item("laptop", "It looks broken", 4, true, 0, true);
+        Item pie = new Item("prisoner's pie", "Could something be inside it?", 5, true, 0, true);
 
         // put items in list
 
@@ -71,16 +72,18 @@ public class Game {
         Room outside, theater, pub, lab, office;
 
         // create the rooms
+        // lockID == 0 is an open room, lockID > 0 is a locked room
+        // to make keys and rooms corresponding, make lockID and keyID the same
 
-        outside = new Room("outside", "outside the main entrance of the university", false);
+        outside = new Room("outside", "outside the main entrance of the university", 0);
         outside.setItemsInRoom(outsideItems);
-        theater = new Room("theater", "in a lecture theater", true);
+        theater = new Room("theater", "in a lecture theater", 1);
         theater.setItemsInRoom(theaterItems);
-        pub = new Room("pub", "in the campus pub", false);
+        pub = new Room("pub", "in the campus pub", 0);
         pub.setItemsInRoom(pubItems);
-        lab = new Room("lab", "in a computing lab", false);
+        lab = new Room("lab", "in a computing lab", 0);
         lab.setItemsInRoom(labItems);
-        office = new Room("office", "in the computing admin office", false);
+        office = new Room("office", "in the computing admin office", 0);
         office.setItemsInRoom(officeItems);
 
         // initialise room exits
@@ -380,14 +383,14 @@ public class Game {
 
                         // if item has isKey true, it's a key and can therefore unlock. let's not make it more complicated
                         // than necessary pl0x
-                        if (itemInInventory.isKey()) {
+                        if (itemInInventory.getKeyID() > 0) {
                             // boolean to prevent multiple messages
                             boolean keyUnused = false;
                             // unlock any locked door, remove key from inventory, message player, end method
                             for (Room n : currentRoom.getExits().values()) {
-                                if (n.isLocked()) {
+                                if (n.isLocked() == itemInInventory.getKeyID()) {
 
-                                    n.setLocked(false);
+                                    n.setLocked(0);
                                     player.removeFromInventory(itemInInventory);
                                     System.out.println("You used the " + itemNameToUse + " on the " + n.getName() + " door.");
                                     break;
@@ -399,12 +402,12 @@ public class Game {
                             }
                             if (keyUnused){
                                 // no locked doors found, message player
-                                System.out.println("No need to use the " + itemNameToUse + "!");
+                                System.out.println(itemNameToUse + " doesn't fit in any locks!");
                             }
                             // check for isUsable bool, if true, remove item, message player
                         } else if (itemInInventory.isUsable()) {
 
-                            itemInInventory.turnIntoKey();
+                            //itemInInventory.turnIntoKey();
                             System.out.println("You used " + itemNameToUse);
                             System.out.println("It's a key!");
                         } else {
@@ -451,7 +454,7 @@ public class Game {
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
-        } else if (nextRoom.isLocked()) {
+        } else if (nextRoom.isLocked() > 0) {
             System.out.println("The door is locked!");
         } else {
             room.push(currentRoom);

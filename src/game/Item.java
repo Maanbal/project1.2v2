@@ -5,16 +5,15 @@ public class Item {
     private String description;
     private int weight;
     private boolean pickUp;
-    private boolean isKey;
+    private int keyID;
     private boolean isUsable;
 
-    public Item(String name, String description, int weight, boolean pickUp, boolean isKey, boolean isUsable) {
-        // TODO int keyID??
+    public Item(String name, String description, int weight, boolean pickUp, int keyID, boolean isUsable) {
         this.name = name;
         this.description = description;
         this.weight = weight;
         this.pickUp = pickUp;
-        this.isKey = isKey;
+        this.keyID = keyID;
         this.isUsable = isUsable;
     }
 
@@ -50,12 +49,12 @@ public class Item {
         this.pickUp = pickUp;
     }
 
-    public boolean isKey() {
-        return isKey;
+    public int getKeyID() {
+        return keyID;
     }
 
-    public void setKey(boolean key) {
-        isKey = key;
+    public void setKey(int key) {
+        keyID = key;
     }
 
     public boolean isUsable() {
@@ -66,12 +65,4 @@ public class Item {
         isUsable = usable;
     }
 
-    public void turnIntoKey(){
-        this.setName("key");
-        this.setDescription("It's a key!");
-        this.setKey(true);
-        this.setWeight(1);
-        this.setUsable(false);
-        this.setPickUp(true);
-    }
 }
