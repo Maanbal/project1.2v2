@@ -84,6 +84,17 @@ public class Room {
     public void setItemsInRoom(List<Item> itemsInRoom) {
         this.itemsInRoom = itemsInRoom;
     }
+    
+//    /**
+//     * Add array of items into this room
+//     */
+//    public void addItems(ArrayList<Item> items) {
+//
+//        for(Item item : items){
+//            itemsInRoom += item;
+//        }
+//
+//    }
 
     /**
      * Define an exit from this room.

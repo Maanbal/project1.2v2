@@ -31,7 +31,8 @@ public class Game {
      * Create the game and initialise its internal map.
      */
     public Game() {
-        createRooms();
+        // createRooms();
+        createRooms2();
         parser = new Parser();
         room = new Stack<>();
         player = new Player();
@@ -70,8 +71,7 @@ public class Game {
 
         Room outside, theater, pub, lab, office;
 
-        // create the rooms
-
+        // CREATE ROOMS, OLD
         outside = new Room("outside", "outside the main entrance of the university", false);
         outside.setItemsInRoom(outsideItems);
         theater = new Room("theater", "in a lecture theater", true);
@@ -83,27 +83,77 @@ public class Game {
         office = new Room("office", "in the computing admin office", false);
         office.setItemsInRoom(officeItems);
 
-        // initialise room exits
+        // INITIALISE EXITS, OLD
         outside.setExit("east", theater);
         outside.setExit("south", lab);
         outside.setExit("west", pub);
-
         theater.setExit("west", outside);
-
         pub.setExit("east", outside);
-
         lab.setExit("north", outside);
         lab.setExit("east", office);
-
         office.setExit("west", lab);
 
         currentRoom = outside;  // start game outside
     }
-
+    
+    /**
+     * Create all rooms, add descriptions, set isLocked
+     */
     private void createRooms2() {
-        Room lobby, westWing, firstAid, operatingRoom, radiology,
-                eastWing, cafeteria, pharmacy, infirmary, staircase, roof, basement, mortuary;
+        Room lobby, eastWing, cafeteria, infirmary, pharmacy, westWing, radiology, surgicalWard, emergencyRoom,
+                stairwell, roof, basement, mortuary;
+        // CREATE ROOMS
+        lobby = new Room("lobby", "the heart of the hospital", false);
+        // East Wing
+        eastWing = new Room("east wing", "a big hall with colorful walls", false);
+        cafeteria = new Room("cafeteria", "a lunchroom with eating tables and a kitchen", false);
+        infirmary = new Room("infirmary", "lots of empty hospital beds", false);
+        pharmacy = new Room("pharmacy", "a drug store, there seem to be some medicine left", false);
+        // West Wing
+        westWing = new Room("west wing", "a gloomy, poorly lit hall", true);
+        radiology = new Room("radiology","machines that are used to make x-rays", false);
+        surgicalWard = new Room("surgical ward","hospital beds and heart monitors. you see some dried blood stains", false);
+        emergencyRoom = new Room("emergency room","a single operation table with surgical devices around it", true);
+        // Roof and Basement
+        stairwell = new Room("stairwell", "stairs leading up and down", true);
+        roof = new Room("roof", "there seems to be nothing here", false);
+        basement = new Room("basement", "shelves, cabinets and cardboard boxes", false);
+        mortuary = new Room("mortuary", "large, metal drawers. There's an unpleasant smell in this place", true);
+        
+        // CREATE EXITS
+        lobby.setExit("east", eastWing);
+        lobby.setExit("west", westWing);
+        lobby.setExit("north", stairwell);
+        // East Wing
+        eastWing.setExit("west", lobby);
+        eastWing.setExit("east", infirmary);
+        eastWing.setExit("north", cafeteria);
+        eastWing.setExit("south", pharmacy);
+        cafeteria.setExit("south", eastWing);
+        infirmary.setExit("west", eastWing);
+        pharmacy.setExit("north", eastWing);
+        // West Wing
+        westWing.setExit("east", lobby);
+        westWing.setExit("north", surgicalWard);
+        westWing.setExit("south", radiology);
+        radiology.setExit("north", westWing);
+        surgicalWard.setExit("south", westWing);
+        surgicalWard.setExit("west", emergencyRoom);
+        emergencyRoom.setExit("east", surgicalWard);
+        // Roof and Basement
+        stairwell.setExit("south", lobby);
+        stairwell.setExit("up", roof);
+        stairwell.setExit("down", basement);
+        roof.setExit("down", stairwell);
+        basement.setExit("up", stairwell);
+        basement.setExit("east", mortuary);
+        mortuary.setExit("west", basement);
+        
     }
+    
+    public void setExits(){}
+    
+    public void setItems(){}
 
     /**
      * Main play routine.  Loops until end of play.
