@@ -150,10 +150,6 @@ public class Game {
         mortuary.setExit("west", basement);
         
     }
-    
-    public void setExits(){}
-    
-    public void setItems(){}
 
     /**
      * Main play routine.  Loops until end of play.
