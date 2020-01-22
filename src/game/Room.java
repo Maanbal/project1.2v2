@@ -98,7 +98,7 @@ public class Room {
      * @return A long description of this room
      */
     public String getLongDescription() {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are at the " + name + ". You see " + description + ".\n" + getExitString();
     }
 
     /**

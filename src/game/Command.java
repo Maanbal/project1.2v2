@@ -25,8 +25,8 @@ public class Command {
     private String thirdWord;
 
     /**
-     * Create a command object. First and second word must be supplied, but
-     * either one (or both) can be null.
+     * Create a command object. First, second and third word must be supplied, but
+     * all can be null.
      *
      * @param firstWord  The first word of the command. Null if the command
      *                   was not recognised.
@@ -78,6 +78,10 @@ public class Command {
     public boolean hasSecondWord() {
         return (secondWord != null);
     }
-
+    
+    /**
+     * @return true if the command has a third word.
+     */
+    public boolean hasThirdWord() { return (thirdWord != null); }
 }
 

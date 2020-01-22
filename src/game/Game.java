@@ -1,7 +1,8 @@
 package src.game;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -23,8 +24,9 @@ import java.util.Stack;
 
 public class Game {
     private Parser parser;
-    private Room currentRoom;
-    private Stack<Room> room;
+    private Room currentRoom;       // Knows which room the player is in currently
+    private Stack<Room> roomStack;  // Keeps track of the player's movement
+    private Set<Room> roomSet;    // Knows which rooms the player has been in
     private Player player;
 
     /**
@@ -33,7 +35,8 @@ public class Game {
     public Game() {
         createRooms();
         parser = new Parser();
-        room = new Stack<>();
+        roomStack = new Stack<>();
+        roomSet = new HashSet<>();
         player = new Player();
     }
 
@@ -113,6 +116,7 @@ public class Game {
         emergencyRoom.addItem(pie);
         stairwell.addItem(d6);
         basement.addItem(d20);
+        mortuary.addItem(keyuggo);
         
         currentRoom = infirmary;
     }
@@ -139,10 +143,12 @@ public class Game {
      */
     private void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
+        System.out.println("Welcome to our game!");
         System.out.println("Type 'help' if you need help.");
         System.out.println("Type 'about' to find out about the creators of this game.");
         System.out.println();
+        System.out.println("You wake up in an unfamiliar bed... You don't know where you are.");
+        System.out.println("You take a look around...");
         System.out.println(currentRoom.getLongDescription());
     }
 
@@ -168,8 +174,10 @@ public class Game {
                 break;
 
             case "go":
-
+                // TODO split go & go to & go back command
                 // go command
+                // if(command.getSecondWord().equals("to"){ fastTravel(command); break; }
+                // if(command.getSecondWord().equals("back"){ doBack; break; }
                 goRoom(command);
                 break;
 
@@ -240,8 +248,8 @@ public class Game {
      * go back one room
      */
     private void doBack() {
-        if (room.size() > 0) {
-            currentRoom = room.pop();
+        if (roomStack.size() > 0) {
+            currentRoom = roomStack.pop();
             System.out.println(currentRoom.getLongDescription());
         } else {
             System.out.println("You find yourself where you started.");
@@ -320,7 +328,7 @@ public class Game {
             }
             // item isn't found
             if (!isAdded) {
-                System.out.println("You search " + currentRoom.getShortDescription() +
+                System.out.println("You search the " + currentRoom.getName() +
                         " thoroughly, but you can't find a " + itemNameToAdd);
             }
         }
@@ -348,7 +356,7 @@ public class Game {
                     currentRoom.getItemsInRoom().add(itemInInventory);
 
                     // inform player of dropped item
-                    System.out.println("You dropped the " + itemInInventory.getName() + " at " + currentRoom.getShortDescription());
+                    System.out.println("You dropped the " + itemInInventory.getName() + " at " + currentRoom.getName());
                 }
             }
             // item not present in player inventory
@@ -379,7 +387,7 @@ public class Game {
 
             // if no items in inventory, no use for this method.
             if (player.getInventory().size() == 0) {
-                System.out.println("You have nothing to use!");
+                System.out.println("You have no items to use!");
 
             } else {
                 // loop to find item in player inventory
@@ -390,6 +398,7 @@ public class Game {
                     if (itemInInventory.getName().equals(itemNameToUse)) {
                         isFound = true;
 
+                        // check if items is usable
                         if (itemInInventory instanceof ItemUsable) {
                             ItemUsable item = (ItemUsable) itemInInventory;
                             boolean isUsed = item.onUse(player, currentRoom);
@@ -416,8 +425,8 @@ public class Game {
      * command words.
      */
     private void printHelp() {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("You are lost. You are alone. You wander. What happened?");
+        System.out.println("This hospital seems abandoned.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -428,24 +437,50 @@ public class Game {
      * room, otherwise print an error message.
      */
     private void goRoom(Command command) {
+        // If there is no second word after "go", do nothing
         if (!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
             return;
         }
         String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        } else if (nextRoom instanceof LockedRoom && ((LockedRoom)nextRoom).isLocked()) {
-            System.out.println("The door is locked!");
-        } else {
-            room.push(currentRoom);
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+        // If the player types "go to [room]", they can travel to a room they've been before (Room in stack)
+        if(direction.equals("to")){
+            if(!command.hasThirdWord()) {
+                // If there's no third word after "go to", nothing happens
+                System.out.println("Go to... where exactly?");
+                return;
+            }
+            String destination = command.getThirdWord();
+            // String destination should be the name of the Room the player wants to enter
+            for(Room dest : roomSet){
+                // If one of the room names in roomSet is equal to String destination:
+                if(dest.getName().equals(destination)){
+                    roomSet.add(currentRoom);               // "You have entered this room"
+                    roomStack.push(currentRoom);            // "You have last entered this room"
+                    currentRoom = dest;
+                    System.out.println(currentRoom.getLongDescription());
+                    return;
+                }
+            }
+            // If the Room is not in the stack, the player hasn't been there yet and can't fast travel to it
+            System.out.println("You haven't been there before");
+        }
+        else {
+            // Try to leave current room.
+            Room nextRoom = currentRoom.getExit(direction);
+    
+            if (nextRoom == null) {
+                System.out.println("You can't go there.");
+            } else if (nextRoom instanceof LockedRoom && ((LockedRoom) nextRoom).isLocked()) {
+                System.out.println("The door is locked!");
+                // TODO split move() & goRoom()
+            } else {
+                roomSet.add(currentRoom);       // You have entered this room
+                roomStack.push(currentRoom);    // You have last entered this room
+                currentRoom = nextRoom;
+                System.out.println(currentRoom.getLongDescription());
+            }
         }
     }
 
