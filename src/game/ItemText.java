@@ -11,7 +11,7 @@ public class ItemText extends Item implements ItemUsable {
     }
 
     /**
-     * Text method. Will send a message upon usage.
+     * Text method. Will send player a message upon usage.
      * @param player
      * @param room
      * @return return if item needs to be removed from inventory

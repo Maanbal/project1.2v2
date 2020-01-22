@@ -11,7 +11,6 @@ public class ItemTransformer extends ItemText implements ItemUsable {
 
     /**
      * Transformer method. Transforms item on usage.
-     *
      * @param player
      * @param room
      * @return return if item needs to be removed from inventory

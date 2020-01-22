@@ -11,6 +11,10 @@ public class LockedRoom extends Room {
         this.lockID = lockID;
     }
 
+    /**
+     * Getter to see if door is locked or not.
+     * @return if door is locked
+     */
     public boolean isLocked() {
         return isLocked;
     }

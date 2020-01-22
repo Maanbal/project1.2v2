@@ -36,7 +36,7 @@ public class ItemKey extends Item implements ItemUsable {
                 }
             }
         }
-        System.out.println(getName() + " doesn't fit in any locks!");
+        System.out.println("The " + getName() + " doesn't fit!");
         return false;
     }
 }
