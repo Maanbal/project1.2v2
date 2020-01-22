@@ -37,81 +37,196 @@ public class Game {
         player = new Player();
     }
 
+//    /**
+//     * Create all the rooms and link their exits together.
+//     */
+//    private void createRoomsTest() {
+//        // Initial method for this project. Used as a test method.
+//
+//        // create item lists
+//        List<Item> outsideItems = new ArrayList<>();
+//        List<Item> theaterItems = new ArrayList<>();
+//        List<Item> pubItems = new ArrayList<>();
+//        List<Item> labItems = new ArrayList<>();
+//        List<Item> officeItems = new ArrayList<>();
+//
+//        // create items for the entire game
+//
+//        Item key = new ItemKey("key", "A brass key", 1, 1);
+//        Item keyuggo = new ItemKey("key two", "A bronze key", 1, 2);
+//        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true);
+//        Item plant = new Item("plant", "A withering plant", 2, false);
+//        Item rock = new Item("rock", "A big rock", 10, true);
+//        Item chair = new Item("chair", "A black chair", 3, true);
+//        Item laptop = new ItemText("laptop", "It looks broken", 4, "It's just a blue screen...");
+//        Item pie = new ItemTransformer("prisoner's pie", "Could something be inside it?", 5,
+//                "You eat the pie... You find a key!", key);
+//        Item d6 = new ItemDie("d6", "It's a six sided die!", 1, 6);
+//        Item d20 = new ItemDie("d20", "It's a twenty sided die!", 1, 20);
+//
+//        // put items in room list
+//
+//        outsideItems.add(key);
+//        outsideItems.add(keyuggo);
+//        outsideItems.add(book);
+//        outsideItems.add(plant);
+//        outsideItems.add(d6);
+//        outsideItems.add(d20);
+//        theaterItems.add(rock);
+//        theaterItems.add(chair);
+//        officeItems.add(laptop);
+//        labItems.add(pie);
+//
+//        Room outside, theater, pub, lab, office;
+//
+//        // create the rooms
+//        // lockID == 0 is an open room, lockID > 0 is a locked room
+//        // to make keys and rooms corresponding, make lockID and keyID the same
+//
+//        outside = new Room("outside", "outside the main entrance of the university");
+//        outside.setItemsInRoom(outsideItems);
+//        theater = new LockedRoom("theater", "in a lecture theater", 1);
+//        theater.setItemsInRoom(theaterItems);
+//        pub = new Room("pub", "in the campus pub");
+//        pub.setItemsInRoom(pubItems);
+//        lab = new Room("lab", "in a computing lab");
+//        lab.setItemsInRoom(labItems);
+//        office = new Room("office", "in the computing admin office");
+//        office.setItemsInRoom(officeItems);
+//
+//        // initialise room exits
+//        outside.setExit("east", theater);
+//        outside.setExit("south", lab);
+//        outside.setExit("west", pub);
+//
+//        theater.setExit("west", outside);
+//
+//        pub.setExit("east", outside);
+//
+//        lab.setExit("north", outside);
+//        lab.setExit("east", office);
+//
+//        office.setExit("west", lab);
+//
+//        currentRoom = outside;  // start game outside
+//    }
+
     /**
      * Create all the rooms and link their exits together.
      */
     private void createRooms() {
-        // create item lists
-        List<Item> outsideItems = new ArrayList<>();
-        List<Item> theaterItems = new ArrayList<>();
-        List<Item> pubItems = new ArrayList<>();
-        List<Item> labItems = new ArrayList<>();
-        List<Item> officeItems = new ArrayList<>();
+        // list for items
 
-        // create items for the entire game
+        List<Item> westWingItems = new ArrayList<>();
+        List<Item> firstAidItems = new ArrayList<>();
+        List<Item> operatingRoomItems = new ArrayList<>();
+        List<Item> radiologyItems = new ArrayList<>();
 
-        Item key = new ItemKey("key", "A brass key", 1, 1);
-        Item keyuggo = new ItemKey("key two", "A bronze key", 1, 2);
-        Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true);
+        List<Item> eastWingItems = new ArrayList<>();
+        List<Item> cafeteriaItems = new ArrayList<>();
+        List<Item> pharmacyItems = new ArrayList<>();
+        List<Item> infirmaryItems = new ArrayList<>();
+
+        List<Item> lobbyItems = new ArrayList<>();
+        List<Item> staircaseItems = new ArrayList<>();
+        List<Item> roofItems = new ArrayList<>();
+        List<Item> basementItems = new ArrayList<>();
+        List<Item> mortuaryItems = new ArrayList<>();
+
+        // All items for game
+        // Items
         Item plant = new Item("plant", "A withering plant", 2, false);
-        Item rock = new Item("rock", "A big rock", 10, true);
-        Item chair = new Item("chair", "A black chair", 3, true);
-        Item laptop = new ItemText("laptop", "It looks broken", 4, "It's just a blue screen...");
-        Item pie = new ItemTransformer("prisoner's pie", "Could something be inside it?", 5,
-                "You eat the pie... You find a key!", key);
-        Item d6 = new ItemDie("d6", "It's a six sided die!", 1, 6);
-        Item d20 = new ItemDie("d20", "It's a twenty sided die!", 1, 20);
+        Item body = new Item("body bag", "The smell coming from this thing is awful, better not touch it.", 76, false);
 
-        // put items in room list
+        // ItemKey items
+        Item staircaseKey = new ItemKey("brass key", "A brass key.", 1, 1);
+        Item roofKey = new ItemKey("silver key", "A silver key.", 1, 2);
+        Item mortuaryKey = new ItemKey("red key", "A red key.", 1, 3);
 
-        outsideItems.add(key);
-        outsideItems.add(keyuggo);
-        outsideItems.add(book);
-        outsideItems.add(plant);
-        outsideItems.add(d6);
-        outsideItems.add(d20);
-        theaterItems.add(rock);
-        theaterItems.add(chair);
-        officeItems.add(laptop);
-        labItems.add(pie);
+        // ItemDie items
+        Item d6 = new ItemDie("d6", "A six sided die. Seems kinda useless, but fun to have", 1, 6);
+        Item d20 = new ItemDie("d20", "A twenty sided die. Someone here must be a D&D fan. " +
+                "Seems kinda useless, but a fun item to have.", 1, 20);
 
-        Room outside, theater, pub, lab, office;
+        // ItemText items
+        Item laptop = new ItemText("laptop", "It looks broken", 4, "You try to boot the computer, " +
+                "but you just get a blue screen...");
+        Item note = new ItemText("note", "A scrumpled up note.", 1,
+                "Log 4. \n Patient 33 keeps forgetting everything we tell them. " +
+                        "\n It's like they have Alzheimer's, except our tests conclude " +
+                        "\n that Alzheimer's isn't the case. This is tough for sure.");
 
-        // create the rooms
-        // lockID == 0 is an open room, lockID > 0 is a locked room
-        // to make keys and rooms corresponding, make lockID and keyID the same
+        // ItemTransformer items
+        Item pie = new ItemTransformer("prisoner's pie", "A cartoony cake. Could something be inside?", 3,
+                "You eat the cake. It tastes terrible, but you find a key!", roofKey);
 
-        outside = new Room("outside", "outside the main entrance of the university");
-        outside.setItemsInRoom(outsideItems);
-        theater = new LockedRoom("theater", "in a lecture theater", 1);
-        theater.setItemsInRoom(theaterItems);
-        pub = new Room("pub", "in the campus pub");
-        pub.setItemsInRoom(pubItems);
-        lab = new Room("lab", "in a computing lab");
-        lab.setItemsInRoom(labItems);
-        office = new Room("office", "in the computing admin office");
-        office.setItemsInRoom(officeItems);
 
-        // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        // Lobby items
+        lobbyItems.add(staircaseKey);
+        lobbyItems.add(plant);
 
-        theater.setExit("west", outside);
+        // West wing items
 
-        pub.setExit("east", outside);
+        // First aid items
 
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
+        // Operating room items
 
-        office.setExit("west", lab);
+        // Radiology items
 
-        currentRoom = outside;  // start game outside
-    }
+        // East wing items
 
-    private void createRooms2() {
+        // Cafeteria items
+
+        // Pharmacy items
+
+        // Infirmary items
+
+        // Basement items
+        basementItems.add(mortuaryKey);
+        basementItems.add(d6);
+        basementItems.add(laptop);
+
+        // Mortuary items
+        mortuaryItems.add(d20);
+        mortuaryItems.add(pie);
+        mortuaryItems.add(body);
+
+        // Roof items
+        roofItems.add(note);
+
+        // Declare rooms
         Room lobby, westWing, firstAid, operatingRoom, radiology,
                 eastWing, cafeteria, pharmacy, infirmary, staircase, roof, basement, mortuary;
+
+        // Initialise rooms and add items in room.
+        // If room has a lockID, the room is initialised as a locked room.
+        // to match keys and rooms, set lockID and keyID to the same number.
+        lobby = new Room ("lobby", "in the hospital lobby");
+        lobby.setItemsInRoom(lobbyItems);
+        staircase = new LockedRoom("staircase", "in a solemn looking stairwell. It seems you can go up as well as down", 1);
+        staircase.setItemsInRoom(staircaseItems);
+        roof = new LockedRoom("rooftop", "at the rooftop. It's very misty out here, you can't make out much", 2);
+        roof.setItemsInRoom(roofItems);
+        basement = new Room("basement", "in the basement. A weak light flickers in a basement full of boxes");
+        basement.setItemsInRoom(basementItems);
+        mortuary = new LockedRoom("mortuary", "in the mortuary. The mortuary seems empty except for a single body bag", 3);
+        mortuary.setItemsInRoom(mortuaryItems);
+
+        // initialise exits
+        lobby.setExit("south", staircase);
+
+        staircase.setExit("north", lobby);
+        staircase.setExit("up", roof);
+        staircase.setExit("down", basement);
+
+        roof.setExit("down", staircase);
+
+        basement.setExit("up", staircase);
+        basement.setExit("south", mortuary);
+
+        mortuary.setExit("north", basement);
+
+        currentRoom = lobby;
     }
 
     /**
@@ -128,7 +243,7 @@ public class Game {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("You give up on finding the truth. Goodbye.");
     }
 
     /**
@@ -345,7 +460,7 @@ public class Game {
                     currentRoom.getItemsInRoom().add(itemInInventory);
 
                     // inform player of dropped item
-                    System.out.println("You dropped the " + itemInInventory.getName() + " at " + currentRoom.getShortDescription());
+                    System.out.println("You dropped the " + itemInInventory.getName() + " in/at the " + currentRoom.getName());
                 }
             }
             // item not present in player inventory
@@ -409,7 +524,7 @@ public class Game {
      */
     private void printHelp() {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("around in a forlorn hospital.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
