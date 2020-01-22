@@ -36,9 +36,9 @@ public class Game {
         room = new Stack<>();
         player = new Player();
     }
-    
+
     /**
-     * Create all rooms, add descriptions, set isLocked
+     * Create all the rooms and link their exits together.
      */
     private void createRooms() {
         Room lobby, eastWing, cafeteria, infirmary, pharmacy, westWing, radiology, surgicalWard, emergencyRoom,
@@ -92,6 +92,7 @@ public class Game {
         
         // CREATE ITEMS
         Item key = new ItemKey("key", "A brass key", 1, 1);
+        Item keyuggo = new ItemKey("key two", "A bronze key", 1, 2);
         Item book = new Item("book", "The title reads: 'Dreams of Paradise'", 1, true);
         Item plant = new Item("plant", "A withering plant", 2, false);
         Item rock = new Item("rock", "A big rock", 10, true);
@@ -389,37 +390,13 @@ public class Game {
                     if (itemInInventory.getName().equals(itemNameToUse)) {
                         isFound = true;
 
-                        // if item has isKey true, it's a key and can therefore unlock. let's not make it more complicated
-                        // than necessary pl0x
-                        if (itemInInventory.isKey()) {
-                            // boolean to prevent multiple messages
-                            boolean keyUnused = false;
-                            // unlock any locked door, remove key from inventory, message player, end method
-                            for (Room n : currentRoom.getExits().values()) {
-                                if (n.isLocked()) {
-
-                                    n.setLocked(false);
-                                    player.removeFromInventory(itemInInventory);
-                                    System.out.println("You used the " + itemNameToUse + " on the " + n.getName() + " door.");
-                                    break;
-
-                                } else {
-                                    // no key usage was found, set bool to true
-                                    keyUnused = true;
-                                }
+                        if (itemInInventory instanceof ItemUsable) {
+                            ItemUsable item = (ItemUsable) itemInInventory;
+                            boolean isUsed = item.onUse(player, currentRoom);
+                            if (isUsed) {
+                                player.removeFromInventory(itemInInventory);
                             }
-                            if (keyUnused){
-                                // no locked doors found, message player
-                                System.out.println("No need to use the " + itemNameToUse + "!");
-                            }
-                            // check for isUsable bool, if true, remove item, message player
-                        } else if (itemInInventory.isUsable()) {
-
-                            itemInInventory.turnIntoKey();
-                            System.out.println("You used " + itemNameToUse);
-                            System.out.println("It's a key!");
                         } else {
-                            // isUsable bool != true, message player
                             System.out.println("You can't use this item.");
                         }
                     }
@@ -430,6 +407,7 @@ public class Game {
                 }
             }
         }
+
     }
 
     /**
@@ -462,7 +440,7 @@ public class Game {
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
-        } else if (nextRoom.isLocked()) {
+        } else if (nextRoom instanceof LockedRoom && ((LockedRoom)nextRoom).isLocked()) {
             System.out.println("The door is locked!");
         } else {
             room.push(currentRoom);

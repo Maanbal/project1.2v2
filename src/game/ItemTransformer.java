@@ -1,6 +1,6 @@
 package src.game;
 
-public class ItemTransformer extends ItemText implements ItemUsable{
+public class ItemTransformer extends ItemText implements ItemUsable {
 
     private final Item item;
 
@@ -9,6 +9,13 @@ public class ItemTransformer extends ItemText implements ItemUsable{
         this.item = item;
     }
 
+    /**
+     * Transformer method. Transforms item on usage.
+     *
+     * @param player
+     * @param room
+     * @return return if item needs to be removed from inventory
+     */
     @Override
     public boolean onUse(Player player, Room room) {
         super.onUse(player, room);

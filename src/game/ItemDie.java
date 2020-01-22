@@ -11,6 +11,12 @@ public class ItemDie extends Item implements ItemUsable {
         this.sides = sides;
     }
 
+    /**
+     * Die method. Generate random number.
+     * @param player
+     * @param room
+     * @return return if item needs to be removed from inventory
+     */
     @Override
     public boolean onUse(Player player, Room room) {
         int outcome = random.nextInt(sides) + 1;

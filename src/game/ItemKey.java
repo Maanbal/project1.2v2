@@ -16,16 +16,24 @@ public class ItemKey extends Item implements ItemUsable {
         this.keyID = keyID;
     }
 
+    /**
+     * key method. Unlocks door if it can.
+     * @param player
+     * @param room
+     * @return return if item needs to be removed from inventory
+     */
     @Override
     public boolean onUse(Player player, Room room) {
         // unlock any locked door, remove key from inventory, message player, end method
         for (Room adjacentRoom : room.getExits().values()) {
-            if (adjacentRoom.isLocked() == keyID) {
+            if (adjacentRoom instanceof LockedRoom) {
+                LockedRoom lockedRoom = (LockedRoom) adjacentRoom;
 
-                adjacentRoom.setLocked(0);
-                System.out.println("You used the " + getName() + " on the " + adjacentRoom.getName() + " door.");
-                return true;
+                if (lockedRoom.tryUnlock(keyID)) {
+                    System.out.println("You used the " + getName() + " on the " + adjacentRoom.getName() + " door.");
+                    return true;
 
+                }
             }
         }
         System.out.println(getName() + " doesn't fit in any locks!");
