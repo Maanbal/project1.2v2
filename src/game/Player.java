@@ -45,7 +45,7 @@ public class Player {
             return false;
             // check weight limits
         } else if ((item.getWeight() + currentInventoryWeight) > MAX_INVENTORY_WEIGHT) {
-            System.out.println("Argh! This " + item.getName() + " is too heavy! You can't carry more!");
+            System.out.println("Argh! This " + item.getName() + " is too heavy! You can't carry this!");
             return false;
             // add item if pickUp == true and weight total weight is not >5
         } else {

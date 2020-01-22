@@ -2,7 +2,7 @@
 Zuul game
 
 Project: Design & Build
-Authors: Merel Foekens, Ramon Boonstra, Marnix van den Berg
+Authors: Merel Foekens, Marnix van den Berg
 
 This is an adventure type game, based of a simple simple framework:
 Project: zuul-better

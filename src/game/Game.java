@@ -37,11 +37,13 @@ public class Game {
         player = new Player();
     }
 
+    /**
+     * // Initial method for this project. Used as a test method.
+     */
 //    /**
 //     * Create all the rooms and link their exits together.
 //     */
 //    private void createRoomsTest() {
-//        // Initial method for this project. Used as a test method.
 //
 //        // create item lists
 //        List<Item> outsideItems = new ArrayList<>();
@@ -128,7 +130,7 @@ public class Game {
         List<Item> infirmaryItems = new ArrayList<>();
 
         List<Item> lobbyItems = new ArrayList<>();
-        List<Item> staircaseItems = new ArrayList<>();
+        List<Item> stairwellItems = new ArrayList<>();
         List<Item> roofItems = new ArrayList<>();
         List<Item> basementItems = new ArrayList<>();
         List<Item> mortuaryItems = new ArrayList<>();
@@ -136,17 +138,19 @@ public class Game {
         // All items for game
         // Items
         Item plant = new Item("plant", "A withering plant", 2, false);
-        Item body = new Item("body bag", "The smell coming from this thing is awful, better not touch it.", 76, false);
+        Item body = new Item("body bag", "The smell coming from this thing is awful, better not touch it.", 76, true);
+        Item brick = new Item("brick", "It's a broken off brick.", 4, true);
 
         // ItemKey items
-        Item staircaseKey = new ItemKey("brass key", "A brass key.", 1, 1);
+        Item stairwellKey = new ItemKey("brass key", "A brass key.", 1, 1);
+        // roof key hidden in prisoner's pie
         Item roofKey = new ItemKey("silver key", "A silver key.", 1, 2);
         Item mortuaryKey = new ItemKey("red key", "A red key.", 1, 3);
 
         // ItemDie items
-        Item d6 = new ItemDie("d6", "A six sided die. Seems kinda useless, but fun to have", 1, 6);
+        Item d6 = new ItemDie("d6", "A six sided die. It seems kinda useless, but a fun item to play around with.", 1, 6);
         Item d20 = new ItemDie("d20", "A twenty sided die. Someone here must be a D&D fan. " +
-                "Seems kinda useless, but a fun item to have.", 1, 20);
+                "It seems kinda useless, but a fun item to play around with.", 1, 20);
 
         // ItemText items
         Item laptop = new ItemText("laptop", "It looks broken", 4, "You try to boot the computer, " +
@@ -154,7 +158,13 @@ public class Game {
         Item note = new ItemText("note", "A scrumpled up note.", 1,
                 "Log 4. \n Patient 33 keeps forgetting everything we tell them. " +
                         "\n It's like they have Alzheimer's, except our tests conclude " +
-                        "\n that Alzheimer's isn't the case. This is tough for sure.");
+                        "\n that Alzheimer's isn't the case. This is a tough case for sure.");
+        Item chair = new ItemText("chair", "A folding chair.", 3,
+                "You put down the chair and sit on it." +
+                        "\n ..." +
+                        "\n ..." +
+                        "\n ..." +
+                        "\n You get bored after a while, so you stand up and pick up the chair again.");
 
         // ItemTransformer items
         Item pie = new ItemTransformer("prisoner's pie", "A cartoony cake. Could something be inside?", 3,
@@ -162,7 +172,7 @@ public class Game {
 
 
         // Lobby items
-        lobbyItems.add(staircaseKey);
+        lobbyItems.add(stairwellKey);
         lobbyItems.add(plant);
 
         // West wing items
@@ -191,37 +201,45 @@ public class Game {
         mortuaryItems.add(pie);
         mortuaryItems.add(body);
 
+        // Stairwell items
+        stairwellItems.add(brick);
+
         // Roof items
         roofItems.add(note);
+        roofItems.add(chair);
 
         // Declare rooms
         Room lobby, westWing, firstAid, operatingRoom, radiology,
-                eastWing, cafeteria, pharmacy, infirmary, staircase, roof, basement, mortuary;
+                eastWing, cafeteria, pharmacy, infirmary, stairwell, roof, basement, mortuary;
 
-        // Initialise rooms and add items in room.
+        // Initialise rooms and add items to room.
         // If room has a lockID, the room is initialised as a locked room.
         // to match keys and rooms, set lockID and keyID to the same number.
         lobby = new Room ("lobby", "in the hospital lobby");
         lobby.setItemsInRoom(lobbyItems);
-        staircase = new LockedRoom("staircase", "in a solemn looking stairwell. It seems you can go up as well as down", 1);
-        staircase.setItemsInRoom(staircaseItems);
+
+        stairwell = new LockedRoom("stairwell", "in a solemn looking stairwell. It seems you can go up as well as down", 1);
+        stairwell.setItemsInRoom(stairwellItems);
+
         roof = new LockedRoom("rooftop", "at the rooftop. It's very misty out here, you can't make out much", 2);
         roof.setItemsInRoom(roofItems);
+
         basement = new Room("basement", "in the basement. A weak light flickers in a basement full of boxes");
         basement.setItemsInRoom(basementItems);
+
         mortuary = new LockedRoom("mortuary", "in the mortuary. The mortuary seems empty except for a single body bag", 3);
         mortuary.setItemsInRoom(mortuaryItems);
 
         // initialise exits
-        lobby.setExit("south", staircase);
+        lobby.setExit("south", stairwell);
 
-        staircase.setExit("north", lobby);
-        staircase.setExit("up", roof);
-        staircase.setExit("down", basement);
+        stairwell.setExit("north", lobby);
+        stairwell.setExit("up", roof);
+        stairwell.setExit("down", basement);
 
-        roof.setExit("down", staircase);
+        roof.setExit("down", stairwell);
 
-        basement.setExit("up", staircase);
+        basement.setExit("up", stairwell);
         basement.setExit("south", mortuary);
 
         mortuary.setExit("north", basement);
@@ -230,7 +248,7 @@ public class Game {
     }
 
     /**
-     * Main play routine.  Loops until end of play.
+     * Main play routine. Loops until end of play.
      */
     public void play() {
         printWelcome();
@@ -292,7 +310,7 @@ public class Game {
 
             case "about":
                 // about the creators
-                System.out.println("This game was made by three CS students attending Hanzehogeschool Groningen");
+                System.out.println("This game was made by two CS students attending Hanzehogeschool Groningen");
                 break;
 
             case "look":
