@@ -44,22 +44,22 @@ public class Game {
         Room lobby, eastWing, cafeteria, infirmary, pharmacy, westWing, radiology, surgicalWard, emergencyRoom,
                 stairwell, roof, basement, mortuary;
         // CREATE ROOMS
-        lobby = new Room("lobby", "the heart of the hospital", 0);
+        lobby = new Room("lobby", "the heart of the hospital");
         // East Wing
-        eastWing = new Room("east wing", "a big hall with colorful walls", 0);
-        cafeteria = new Room("cafeteria", "a lunchroom with eating tables and a kitchen", 0);
-        infirmary = new Room("infirmary", "lots of empty hospital beds", 0);
-        pharmacy = new Room("pharmacy", "a drug store, there seem to be some medicine left", 0);
+        eastWing = new Room("east wing", "a big hall with colorful walls");
+        cafeteria = new Room("cafeteria", "a lunchroom with eating tables and a kitchen");
+        infirmary = new Room("infirmary", "lots of empty hospital beds");
+        pharmacy = new Room("pharmacy", "a drug store, there seem to be some medicine left");
         // West Wing
-        westWing = new Room("west wing", "a gloomy, poorly lit hall", 1);
-        radiology = new Room("radiology","machines that are used to make x-rays", 0);
-        surgicalWard = new Room("surgical ward","hospital beds and heart monitors. you see some dried blood stains", 0);
-        emergencyRoom = new Room("emergency room","a single operation table with surgical devices around it", 2);
+        westWing = new LockedRoom("west wing", "a gloomy, poorly lit hall", 1);
+        radiology = new Room("radiology","machines that are used to make x-rays");
+        surgicalWard = new Room("surgical ward","hospital beds and heart monitors. you see some dried blood stains");
+        emergencyRoom = new LockedRoom("emergency room","a single operation table with surgical devices around it", 2);
         // Roof and Basement
-        stairwell = new Room("stairwell", "stairs leading up and down", 3);
-        roof = new Room("roof", "there seems to be nothing here", 0);
-        basement = new Room("basement", "shelves, cabinets and cardboard boxes", 0);
-        mortuary = new Room("mortuary", "large, metal drawers. There's an unpleasant smell in this place", 4);
+        stairwell = new LockedRoom("stairwell", "stairs leading up and down", 3);
+        roof = new Room("roof", "there seems to be nothing here");
+        basement = new Room("basement", "shelves, cabinets and cardboard boxes");
+        mortuary = new LockedRoom("mortuary", "large, metal drawers. There's an unpleasant smell in this place", 4);
         
         // CREATE EXITS
         lobby.setExit("east", eastWing);
