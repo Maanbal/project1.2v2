@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+// import java.util.Date;
+// TODO keep track of time played
 
 /**
  * This class is the main class of the "World of Zuul" application.
@@ -126,6 +128,10 @@ public class Game {
         // Initialise rooms and add items to room.
         // If room has a lockID, the room is initialised as a locked room.
         // to match keys and rooms, set lockID and keyID to the same number.
+        // TODO new Room: outside
+        // add exit to lobby when final puzzle is solved
+        // Win is achieved when stepping into the room
+        
         lobby = new Room("lobby", "in the hospital lobby");
         lobby.addItem(stairwellKey);
         lobby.addItem(plant);
