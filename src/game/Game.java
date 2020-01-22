@@ -120,7 +120,7 @@ public class Game {
         // list for items
 
         List<Item> westWingItems = new ArrayList<>();
-        List<Item> firstAidItems = new ArrayList<>();
+        List<Item> emergencyFirstAidItems = new ArrayList<>();
         List<Item> operatingRoomItems = new ArrayList<>();
         List<Item> radiologyItems = new ArrayList<>();
 
@@ -137,51 +137,103 @@ public class Game {
 
         // All items for game
         // Items
-        Item plant = new Item("plant", "A withering plant", 2, false);
+        Item plant = new Item("plant", "It's withering.", 2, false);
+        Item flower = new Item("pretty flower", "You spot that it's a rose!", 1, true);
         Item body = new Item("body bag", "The smell coming from this thing is awful, better not touch it.", 76, true);
-        Item brick = new Item("brick", "It's a broken off brick.", 4, true);
+        Item brick = new Item("brick", "It's been broken off from somewhere.", 4, true);
+        Item painting = new Item("painting", "It's pretty solemn, but you're no art critic.", 7, false);
+        Item scalpel = new Item("bloody scalpel", "You rather not touch it.", 1, true);
+        Item couch = new Item("leather couch", "Looks comfy enough.", 12, false);
+        Item lamp = new Item("lamp", "It's turned off.", 2, true);
+        Item fridge = new Item("fridge", "It has a huge lock on it. It probably holds medication of sorts.", 400, false);
+        Item toiletPaper = new Item("toiletpaper", "You don't need to go to the bathroom though.", 1, true);
+        Item coatRack = new Item("coat rack", "It has a single coat on it, but it looks like moths have been enjoying it.", 20, false);
 
         // ItemKey items
-        Item stairwellKey = new ItemKey("brass key", "A brass key.", 1, 1);
-        // roof key hidden in prisoner's pie
-        Item roofKey = new ItemKey("silver key", "A silver key.", 1, 2);
-        Item mortuaryKey = new ItemKey("red key", "A red key.", 1, 3);
+        // hidden keys
+        Item roofKey = new ItemKey("silver key", "Where can you use it?", 1, 2);
+        Item operatingKey = new ItemKey("bloody key", "Where can you use it? It's really gross.", 1, 4);
+
+        // non-hidden keys
+        Item stairwellKey = new ItemKey("brass key", "Where can you use it?", 1, 1);
+        Item mortuaryKey = new ItemKey("red key", "Where can you use it? Who even makes their key red?", 1, 3);
 
         // ItemDie items
         Item d6 = new ItemDie("d6", "A six sided die. It seems kinda useless, but a fun item to play around with.", 1, 6);
         Item d20 = new ItemDie("d20", "A twenty sided die. Someone here must be a D&D fan. " +
                 "It seems kinda useless, but a fun item to play around with.", 1, 20);
+        Item d8 = new ItemDie("d8", "An eight sided die. It seems kinda useless, but a fun item to play around with.", 1, 8);
 
         // ItemText items
         Item laptop = new ItemText("laptop", "It looks broken", 4, "You try to boot the computer, " +
                 "but you just get a blue screen...");
-        Item note = new ItemText("note", "A scrumpled up note.", 1,
+        Item note = new ItemText("note", "It's scrumpled up.", 1,
                 "Log 4. \n Patient 33 keeps forgetting everything we tell them. " +
                         "\n It's like they have Alzheimer's, except our tests conclude " +
                         "\n that Alzheimer's isn't the case. This is a tough case for sure.");
-        Item chair = new ItemText("chair", "A folding chair.", 3,
+        Item chair = new ItemText("chair", "The folding kind.", 3,
                 "You put down the chair and sit on it." +
                         "\n ..." +
                         "\n ..." +
                         "\n ..." +
                         "\n You get bored after a while, so you stand up and pick up the chair again.");
+        Item xRay = new ItemText("x-ray", "Whose x-ray is it?", 1,
+                "The top of the x-ray it says 'Patient 33'." +
+                        "\n The x-ray itself seems to be of someone's skull." +
+                        "\n You don't possess the medical knowledge to deduce what's wrong with this x-ray.");
+        Item clue = new ItemText("torn note", "Despite it being torn, you can still read most of it",1,
+                "... don't know what's wrong with patient 3..." +
+                        "\n ... it's clear something special happened to..." +
+                        "\n ... must continue experimenting on..." +
+                        "\n ... you can't read further.");
+        Item sheet = new ItemText("white sheet", "The only sheets around here that don't look dirty.", 2,
+                "You pull the sheets over yourself." +
+                        "\n 'BOOOOOO' you try to say as scary as you can." +
+                        "\n you realise you look and sound ridiculous, and you're embarrassed despite being alone." +
+                        "\n you take off the sheets and put them back in your inventory.");
+        Item newspaper = new ItemText("newspaper", "It seems to be pretty old.", 1,
+                "The headline reads:" +
+                        "\n'STUDENTS MAKE NEW TEXT BASED VIDEO GAME, IT'S AMAZING!'" +
+                        "\n you find that hard to believe.");
+        Item hat = new ItemText("hat", "It's a fedora. It's not very fashionable nowadays.", 2,
+                "You put it on your head, and immediately feel less attractive." +
+                        "\n You take it off, feeling repulsed.");
 
         // ItemTransformer items
         Item pie = new ItemTransformer("prisoner's pie", "A cartoony cake. Could something be inside?", 3,
-                "You eat the cake. It tastes terrible, but you find a key!", roofKey);
+                "You eat the cake. It tastes terrible, but you find a silver key!", roofKey);
+        Item bottle = new ItemTransformer("bottle", "It's containing a dark, unknown liquid", 2,
+                "You smash open the bottle." +
+                        "\n ..." +
+                        "\n ..." +
+                        "\n ew... it got on your pants..." +
+                        "\n in the mess you find a bloody key!", operatingKey);
 
 
         // Lobby items
         lobbyItems.add(stairwellKey);
         lobbyItems.add(plant);
+        lobbyItems.add(couch);
 
         // West wing items
+        westWingItems.add(flower);
+        westWingItems.add(painting);
+        westWingItems.add(coatRack);
 
         // First aid items
+        emergencyFirstAidItems.add(sheet);
+        emergencyFirstAidItems.add(lamp);
+        emergencyFirstAidItems.add(fridge);
 
         // Operating room items
+        operatingRoomItems.add(scalpel);
+        operatingRoomItems.add(clue);
+        operatingRoomItems.add(hat);
 
         // Radiology items
+        radiologyItems.add(bottle);
+        radiologyItems.add(xRay);
+        radiologyItems.add(d8);
 
         // East wing items
 
@@ -200,16 +252,18 @@ public class Game {
         mortuaryItems.add(d20);
         mortuaryItems.add(pie);
         mortuaryItems.add(body);
+        mortuaryItems.add(newspaper);
 
         // Stairwell items
         stairwellItems.add(brick);
+        stairwellItems.add(toiletPaper);
 
         // Roof items
         roofItems.add(note);
         roofItems.add(chair);
 
         // Declare rooms
-        Room lobby, westWing, firstAid, operatingRoom, radiology,
+        Room lobby, westWing, emergencyFirstAid, operatingRoom, radiology,
                 eastWing, cafeteria, pharmacy, infirmary, stairwell, roof, basement, mortuary;
 
         // Initialise rooms and add items to room.
@@ -230,8 +284,22 @@ public class Game {
         mortuary = new LockedRoom("mortuary", "in the mortuary. The mortuary seems empty except for a single body bag", 3);
         mortuary.setItemsInRoom(mortuaryItems);
 
+        westWing = new Room("west wing", "in the west wing. There's signs to radiology and emergency first aid");
+        westWing.setItemsInRoom(westWingItems);
+
+        emergencyFirstAid = new Room("emergency first aid", " in the emergency first aid room. You have a bad feeling about this place");
+        emergencyFirstAid.setItemsInRoom(emergencyFirstAidItems);
+
+        operatingRoom = new LockedRoom("operating theatre", " in the operating theatre. It looks meticulously clean", 4);
+        operatingRoom.setItemsInRoom(operatingRoomItems);
+
+        radiology = new Room("radiology", " in radiology. There are a bunch of x-rays");
+        radiology.setItemsInRoom(radiologyItems);
+
+
         // initialise exits
         lobby.setExit("south", stairwell);
+        lobby.setExit("west", westWing);
 
         stairwell.setExit("north", lobby);
         stairwell.setExit("up", roof);
@@ -243,6 +311,17 @@ public class Game {
         basement.setExit("south", mortuary);
 
         mortuary.setExit("north", basement);
+
+        westWing.setExit("east", lobby);
+        westWing.setExit("north", emergencyFirstAid);
+        westWing.setExit("south", radiology);
+
+        emergencyFirstAid.setExit("north", operatingRoom);
+        emergencyFirstAid.setExit("south", westWing);
+
+        operatingRoom.setExit("south", emergencyFirstAid);
+
+        radiology.setExit("north", westWing);
 
         currentRoom = lobby;
     }
@@ -261,7 +340,7 @@ public class Game {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("You give up on finding the truth. Goodbye.");
+        System.out.println("You give up on finding the truth about your past. Goodbye.");
     }
 
     /**
@@ -310,7 +389,7 @@ public class Game {
 
             case "about":
                 // about the creators
-                System.out.println("This game was made by two CS students attending Hanzehogeschool Groningen");
+                System.out.println("This game was made by Merel Foekens and Marnix van den Berg.");
                 break;
 
             case "look":
@@ -392,7 +471,7 @@ public class Game {
             // if items are found, return name and description of items
             System.out.println("You look around.");
             for (int i = 0; i < currentRoom.getItemsInRoom().size(); i++) {
-                System.out.println("You find a " + items.get(i).getName() + ". Description: " + items.get(i).getDescription());
+                System.out.println("You find a " + items.get(i).getName() + ". " + items.get(i).getDescription());
             }
         }
     }
@@ -411,7 +490,7 @@ public class Game {
                 String itemDescription = item.getDescription();
                 int itemWeight = item.getWeight();
 
-                System.out.println("Name: " + itemName + ", Description: " + itemDescription + ", Weight: " + itemWeight);
+                System.out.println("You have a(n) " + itemName + ". " + itemDescription + " Weight: " + itemWeight);
             }
             // print this line if inventory size == 0
         } else {
