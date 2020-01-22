@@ -174,11 +174,29 @@ public class Game {
                 break;
 
             case "go":
-                // TODO split go & go to & go back command
-                // go command
-                // if(command.getSecondWord().equals("to"){ fastTravel(command); break; }
-                // if(command.getSecondWord().equals("back"){ doBack; break; }
-                goRoom(command);
+                // command for moving to different Rooms
+                String second = command.getSecondWord();
+                if (second == null) {
+                    System.out.println("Go where?");// if the command only says "go", it does nothing
+                    break;
+                }
+                else {
+                    switch (second) {
+                        case "back":                // if command says "go back", it does the same as command "back"
+                            doBack();
+                            break;
+                        case "to":                  // if command says "go to ...", player travels to known room
+                            if (!command.hasThirdWord()) { // nothing if command has no third word
+                                System.out.println("Go to... where");
+                            } else {
+                                fastTravel(command);
+                                break;
+                            }
+                        default:                    // default "go" command, move to adjacent room
+                            goRoom(command);
+                            break;
+                    }
+                }
                 break;
 
             case "quit":
@@ -431,56 +449,53 @@ public class Game {
         System.out.println("Your command words are:");
         parser.showCommands();
     }
-
+    
     /**
-     * Try to in to one direction. If there is an exit, enter the new
-     * room, otherwise print an error message.
+     * General moving method
+     * currentRoom is placed in roomSet to remember which rooms you have visited
+     * currentRoom tracked in roomStack to remember in which order you have visited the rooms ("back" command)
      */
-    private void goRoom(Command command) {
-        // If there is no second word after "go", do nothing
-        if (!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-        String direction = command.getSecondWord();
-        // If the player types "go to [room]", they can travel to a room they've been before (Room in stack)
-        if(direction.equals("to")){
-            if(!command.hasThirdWord()) {
-                // If there's no third word after "go to", nothing happens
-                System.out.println("Go to... where exactly?");
+    private void move(Room nextRoom){
+        roomSet.add(currentRoom);       // You have entered this room
+        roomStack.push(currentRoom);    // You have last entered this room
+        currentRoom = nextRoom;         // You have moved into the next room
+        System.out.println(currentRoom.getLongDescription()); // You are here
+    }
+    
+    /**
+     * Method for fast travelling to Room you have been before
+     * roomSet checks if you've visited the Room by comparing third command word to roomNames
+     * Prints error message if you have not been in that Room
+     */
+    private void fastTravel(Command command){
+        String destination = command.getThirdWord();
+        // String destination should be the name of the Room the player wants to enter
+        for (Room dest : roomSet) {
+            // If one of the room names in roomSet is equal to String destination:
+            if (dest.getName().equals(destination)) {
+                move(dest);     // You move to this room
                 return;
             }
-            String destination = command.getThirdWord();
-            // String destination should be the name of the Room the player wants to enter
-            for(Room dest : roomSet){
-                // If one of the room names in roomSet is equal to String destination:
-                if(dest.getName().equals(destination)){
-                    roomSet.add(currentRoom);               // "You have entered this room"
-                    roomStack.push(currentRoom);            // "You have last entered this room"
-                    currentRoom = dest;
-                    System.out.println(currentRoom.getLongDescription());
-                    return;
-                }
-            }
-            // If the Room is not in the stack, the player hasn't been there yet and can't fast travel to it
-            System.out.println("You haven't been there before");
         }
-        else {
-            // Try to leave current room.
-            Room nextRoom = currentRoom.getExit(direction);
+        // If the Room is not in the stack, the player hasn't been there yet and can't fast travel to it
+        System.out.println("You haven't been there before");
+    }
     
-            if (nextRoom == null) {
-                System.out.println("You can't go there.");
-            } else if (nextRoom instanceof LockedRoom && ((LockedRoom) nextRoom).isLocked()) {
-                System.out.println("The door is locked!");
-                // TODO split move() & goRoom()
-            } else {
-                roomSet.add(currentRoom);       // You have entered this room
-                roomStack.push(currentRoom);    // You have last entered this room
-                currentRoom = nextRoom;
-                System.out.println(currentRoom.getLongDescription());
-            }
+    /**
+     * Moving method that uses the second commandWord to determine in which direction you are moving
+     * Checks if there is an exit in the direction of secondWord
+     * Gives error if player can't move there
+     */
+    private void goRoom(Command command) {
+        String direction = command.getSecondWord();     // the command's second word decides in which direction you move
+        Room nextRoom = currentRoom.getExit(direction); // the next room is on that side of the currentRoom
+
+        if (nextRoom == null) { // do nothing if there is no room on that side of currentRoom
+            System.out.println("You can't go there.");
+        } else if (nextRoom instanceof LockedRoom && ((LockedRoom) nextRoom).isLocked()) {
+            System.out.println("The door is locked!");  // check is room is lockable and locked
+        } else {
+            move(nextRoom);     // move to nextRoom if everything checks out
         }
     }
 
