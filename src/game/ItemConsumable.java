@@ -9,7 +9,7 @@ public class ItemConsumable extends ItemText implements ItemUsable {
     }
 
     /**
-     * Transformer method. Transforms item on usage.
+     * Deletes item after using it.
      *
      * @param player
      * @param room
