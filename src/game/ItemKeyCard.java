@@ -2,6 +2,11 @@ package src.game;
 
 import java.util.Scanner;
 
+/**
+ * Class name: ItemKeyCard
+ *
+ * Class extends ItemText and implements ItemUsable
+ */
 public class ItemKeyCard extends ItemKey implements ItemUsable {
 
     private int keyID;

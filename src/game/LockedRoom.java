@@ -1,5 +1,14 @@
 package src.game;
 
+/**
+ * Class name: LockedRoom
+ *
+ * Extends to room. If a room is initialised as a LockedRoom, it will be locked. Player will need a key to unlock.
+ * a LockedRoom has a lockID. To open this room, keyID must match.
+ *
+ * @author Merel Foekens
+ * @version final
+ */
 public class LockedRoom extends Room {
 
     private final int lockID;
