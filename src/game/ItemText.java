@@ -1,5 +1,15 @@
 package src.game;
 
+/**
+ * Class name: ItemText
+ *
+ * Class extends from Item. Implements ItemUsable.
+ *
+ * Class used to create Items that return text when used.
+ *
+ * @author Merel Foekens
+ * @version final
+ */
 public class ItemText extends Item implements ItemUsable {
 
 

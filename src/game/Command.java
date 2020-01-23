@@ -78,10 +78,11 @@ public class Command {
     public boolean hasSecondWord() {
         return (secondWord != null);
     }
-    
+
     /**
      * @return true if the command has a third word.
      */
-    public boolean hasThirdWord() { return (thirdWord != null); }
+    public boolean hasThirdWord() {
+        return (thirdWord != null);
+    }
 }
-

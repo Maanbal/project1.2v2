@@ -3,11 +3,22 @@ package src.game;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class name: Player
+ *
+ * Class holds information about the player, or in this case, player inventory.
+ *
+ * @author Merel Foekens
+ * @version final
+ */
 public class Player {
     private static int MAX_INVENTORY_WEIGHT = 5;
     private int currentInventoryWeight = 0;
     private List<Item> inventory;
 
+    /**
+     * Constructor method. Only initialises ArrayList in which we can put an Item Object.
+     */
     public Player() {
         this.inventory = new ArrayList<>();
     }
