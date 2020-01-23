@@ -182,7 +182,7 @@ public class Game {
         Item mortuaryKey = new ItemKey("red key", "Where can you use it? Who even makes their key red?", 1, 3);
 
         //ItemKeycard Items
-        Item keyCard = new ItemKeyCard("key-card","A key-card with 4 customizable numbers", 1,"which 4 numbers should I enter?");
+        Item keyCard = new ItemKeyCard("key-card","A key-card with 4 customizable numbers", 1,randomcode.getRandomCode());
 
         // ItemDie items
         Item d6 = new ItemDie("d6", "A six sided die. It seems kinda useless, but a fun item to play around with.", 1, 6);

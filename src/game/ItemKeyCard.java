@@ -2,12 +2,12 @@ package src.game;
 
 import java.util.Scanner;
 
-public class ItemKeyCard extends ItemText implements ItemUsable {
+public class ItemKeyCard extends ItemKey implements ItemUsable {
 
     private int keyID;
 
-    public ItemKeyCard(String name, String description, int weight, String useMessage) {
-        super(name, description, weight, useMessage);
+    public ItemKeyCard(String name, String description, int weight, int keyID ) {
+        super(name, description, weight, keyID);
     }
 
     public int getCode() {
@@ -25,7 +25,6 @@ public class ItemKeyCard extends ItemText implements ItemUsable {
      */
     @Override
     public boolean onUse(Player player, Room room) {
-        super.onUse(player, room);
         System.out.println("The current number is "+this.getCode());
         for (Room adjacentRoom : room.getExits().values()) {
             if (adjacentRoom instanceof LockedRoom) {
