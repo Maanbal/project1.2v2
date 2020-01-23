@@ -1,5 +1,16 @@
 package src.game;
 
+/**
+ * Class name: ItemTransformer
+ *
+ * Class extends to ItemText and implements ItemUsable
+ *
+ * When an ItemTransformer Object is used, the item will be removed from player inventory and the item inside
+ * the ItemTransformer will be added to player inventory.
+ *
+ * @author Merel Foekens
+ * @version final
+ */
 public class ItemTransformer extends ItemText implements ItemUsable {
 
     private final Item item;

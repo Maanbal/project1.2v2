@@ -1,8 +1,22 @@
 package src.game;
 
+/**
+ * Class name: ItemKey
+ *
+ * Class extends from Item. This class is used to create keys.
+ *
+ * @author Merel Foekens
+ * @version final
+ */
 public class ItemKey extends Item implements ItemUsable {
     private int keyID;
 
+    /**
+     * @param name check super class
+     * @param description check super class
+     * @param weight check super class
+     * @param keyID ID of the key. Must match lockID
+     */
     public ItemKey(String name, String description, int weight, int keyID) {
         super(name, description, weight, true);
         this.keyID = keyID;
