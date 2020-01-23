@@ -161,7 +161,7 @@ public class Game {
         lobby.addItem(plant);
         lobby.addItem(couch);
         // East Wing, rooms and items
-        eastWing = new Room("east wing", "a big hall with colorful walls");
+        eastWing = new Room("east_wing", "a big hall with colorful walls");
         eastWing.addItem(keypad);
         eastWing.addItem(wheelchair);
         eastWing.addItem(poster);
@@ -197,15 +197,15 @@ public class Game {
         mortuary.addItem(newspaper);
         
         // West Wing, rooms and items
-        westWing = new Room("west wing", "the west wing. There's signs to radiology and emergency first aid");
+        westWing = new Room("west_wing", "the west wing. There's signs to radiology and emergency first aid");
         westWing.addItem(flower);
         westWing.addItem(painting);
         westWing.addItem(coatRack);
-        emergencyFirstAid = new Room("emergency first aid", "the emergency first aid room. You have a bad feeling about this place");
+        emergencyFirstAid = new Room("emergency_first_aid", "the emergency first aid room. You have a bad feeling about this place");
         emergencyFirstAid.addItem(sheet);
         emergencyFirstAid.addItem(lamp);
         emergencyFirstAid.addItem(fridge);
-        operatingRoom = new LockedRoom("operating theatre", "the operating theatre. It looks meticulously clean", 4);
+        operatingRoom = new LockedRoom("operating_theatre", "the operating theatre. It looks meticulously clean", 4);
         operatingRoom.addItem(scalpel);
         operatingRoom.addItem(clue);
         operatingRoom.addItem(hat);
