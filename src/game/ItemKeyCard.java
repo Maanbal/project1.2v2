@@ -7,12 +7,12 @@ import java.util.Scanner;
  *
  * Class extends ItemText and implements ItemUsable
  */
-public class ItemKeyCard extends ItemText implements ItemUsable {
+public class ItemKeyCard extends ItemKey implements ItemUsable {
 
     private int keyID;
 
-    public ItemKeyCard(String name, String description, int weight, String useMessage) {
-        super(name, description, weight, useMessage);
+    public ItemKeyCard(String name, String description, int weight, int keyID ) {
+        super(name, description, weight, keyID);
     }
 
     public int getCode() {
@@ -30,8 +30,8 @@ public class ItemKeyCard extends ItemText implements ItemUsable {
      */
     @Override
     public boolean onUse(Player player, Room room) {
-        super.onUse(player, room);
-        System.out.println("The current number is "+this.getCode());
+        System.out.println("The current number is "+this.getCode());//Shows the current number saved by the keycard
+        // unlocks any locked door, remove key-card from inventory, message player, end method
         for (Room adjacentRoom : room.getExits().values()) {
             if (adjacentRoom instanceof LockedRoom) {
                 LockedRoom lockedRoom = (LockedRoom) adjacentRoom;
@@ -42,17 +42,17 @@ public class ItemKeyCard extends ItemText implements ItemUsable {
                 }
             }
         }
-
-        Scanner scanner = new Scanner(System.in);
+        //Gets the input from the user, only accepting an int with a length of 4
+        Scanner scanner = new Scanner(System.in); //creates a scanner object to read the commandline input
         try {
-            int tempcode = scanner.nextInt();//vraagt input van gebruiker
-            if (String.valueOf(tempcode).length() == 4) {
-                this.setCode(tempcode);
+            int tempcode = scanner.nextInt(); //asks input from user
+            if (String.valueOf(tempcode).length() == 4) { //checks if the length of the input is 4 characters
+                this.setCode(tempcode); //sets the value of the code to the input of the user
                 System.out.print("I changed the numbers on the key-card to " + this.getCode()+"\n");
             }
             else{
                 System.out.print("I have to enter 4 numbers\n");}
-        }catch(java.util.InputMismatchException e){
+        }catch(java.util.InputMismatchException e){ //catches and handles the InputMismatchException that happens if a player would enter any other character than a number
             System.out.println("I have to enter 4 numbers");
         }
         return false;

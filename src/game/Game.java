@@ -63,9 +63,10 @@ public class Game {
         Item coatRack = new Item("coat rack", "It has a single coat on it, but it looks like moths have been enjoying it.", 20, false);
 
         //cafetaria
-        Item vendingmachine = new Item("vending machine", "Every single item is sold out", 300, false);
-        Item sandwich = new ItemText("sandwich", "It doesn't look that fresh anymore", 3, "You take a bite and notice that you now have a cockroach hanging half out of your mouth, extra proteins for you!");
-        Item soup = new Item("\"soup\" pan ", "Can you even call this soup anymore?", 20, false);
+
+        Item vendingmachine = new Item("vending machine","Every single item is sold out", 300, false);
+        Item sandwich = new ItemConsumable("sandwich", "It doesn't look that fresh anymore", 3, "You take a bite and notice that you now have a cockroach hanging half out of your mouth, extra proteins for you!");
+        Item soup = new Item( "\"soup\" pan ", "Can you even call this soup anymore?", 20, false);
 
         //east wing
         Item keypad = new Item("keypad", "It looks like I need some sort of card to unlock this door", 1, false);
@@ -78,12 +79,13 @@ public class Game {
         Item stuffed_unicorn = new Item("fluffy unicorn", "It's so fluffy I'm gonna die!", 2, true);
 
         //pharmacy
-        Item sleeping_pill = new ItemText("sleeping-pill bottle", "Sleep is the last thing I am thinking about in my current situation", 2, "You're starting to feel a bit drowsy, \nzzzzzzzzzzzzzzzzzzzzzzzzzz\nYou wake up an unknown amount of time later");
-        Item westWingKey = new ItemKey("shiny key", "It has a keychain with a compass rose pointing to the west", 1, 5);
+
+        Item sleeping_pill = new ItemConsumable("sleeping pill", "Sleep is the last thing I am thinking about in my current situation", 2, "You're starting to feel a bit drowsy, \nzzzzzzzzzzzzzzzzzzzzzzzzzz\nYou wake up an unknown amount of time later");
+        Item westWingKey = new ItemKey("shiny key","It has a keychain with a compass rose pointing to the west", 1, 5);
 
         //nurses station
         Item mirror = new Item("mirror", "Why do I have the feeling that I'm being watched?", 1, false);
-        Item keyCard = new ItemKeyCard("key-card", "A key-card with 4 customizable numbers", 1, "which 4 numbers should I enter?");
+        Item keyCard = new ItemKeyCard("key-card", "A key-card with 4 customizable numbers", 1, randomcode.getRandomCode());
 
         // ItemKey items
         // hidden keys (Only add these to ItemTransformer items. Do not add to room list.)
@@ -93,7 +95,8 @@ public class Game {
         // non-hidden keys
         Item stairwellKey = new ItemKey("brass key", "Where can you use it?", 1, 1);
         Item mortuaryKey = new ItemKey("red key", "Where can you use it? Who even makes their key red?", 1, 3);
-        Item largeKey = new ItemKey("large key", "It looks pretty impressive. It makes you feel close to the end.", 1, 5);
+
+        Item largeKey = new ItemKey("large key", "It looks pretty impressive. It makes you feel close to the end.", 1, 6);
 
         // ItemDie items
         Item d6 = new ItemDie("d6", "A six sided die. It seems kinda useless, but a fun item to play around with.", 1, 6);
@@ -158,11 +161,11 @@ public class Game {
         // Initialise rooms and add items to room.
         // If room has a lockID, the room is initialised as a locked room.
         // to match keys and rooms, set lockID and keyID to the same number.
-        lobby = new Room("lobby", "in the hospital lobby");
+        lobby = new Room("lobby", "you can see a door going outside but it seems to be locked");
         lobby.addItem(plant);
         lobby.addItem(couch);
 
-        eastWing = new Room("east_wing", "a big hall with colorful walls");
+        eastWing = new Room("east_wing", "a big hall with colorful walls, you see a sign on the wall\n^ cafeteria ^\n> pharmacy >\nv nurses room v");
         eastWing.addItem(keypad);
         eastWing.addItem(wheelchair);
         eastWing.addItem(poster);
@@ -177,7 +180,7 @@ public class Game {
         infirmary.addItem(bed);
         infirmary.addItem(stuffed_unicorn);
 
-        pharmacy = new Room("pharmacy", "a drug store, there seem to be some medicine left");
+        pharmacy = new LockedRoom("pharmacy", "a drug store, there seem to be some medicine left",randomcode.getRandomCode());
         pharmacy.addItem(sleeping_pill);
         pharmacy.addItem(westWingKey);
 
@@ -230,7 +233,7 @@ public class Game {
         radiology.addItem(d8);
 
         outside = new LockedRoom("outside", "that it's a nice day outside. The fresh air makes you feel amazing," +
-                "\nlike you have won or something", 5);
+                "\nlike you have won or something", 6);
 
         // Initialise exits to all rooms
         // Lobby
@@ -306,7 +309,8 @@ public class Game {
      */
     private void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to Subject: 33!");
+        System.out.println("Welcome to Subject: 33!\n" +
+                "You awaken from a deep sleep and you don't how how you got here, or who you are");
         System.out.println("Type 'help' if you need help.");
         System.out.println("Type 'about' to find out about the creators of this game.");
         System.out.println();
