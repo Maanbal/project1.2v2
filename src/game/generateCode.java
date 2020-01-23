@@ -1,6 +1,6 @@
 package src.game;
 
-public class generate_code {
+public class generateCode {
     private java.util.Random rndGenerator = new java.util.Random();
     private int randomCode;
     private String randomCodeString;
@@ -8,7 +8,7 @@ public class generate_code {
     public final static int NUMBER_OF_VALUES = 9999;
 
 
-    public generate_code() {
+    public generateCode() {
         /**
          * Generates a random 4 digit number as key to the pharmacy
          */
