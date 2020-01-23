@@ -106,45 +106,45 @@ public class Game {
                 "but you just get a blue screen...");
         Item note = new ItemText("note", "It's scrumpled up.", 1,
                 "Log 4. \n Patient 33 keeps forgetting everything we tell them. " +
-                        "\n It's like they have Alzheimer's, except our tests conclude " +
-                        "\n that Alzheimer's isn't the case. This is a tough case for sure.");
+                        "\nIt's like they have Alzheimer's, except our tests conclude " +
+                        "\nthat Alzheimer's isn't the case. This is a tough case for sure.");
         Item chair = new ItemText("chair", "The folding kind.", 3,
                 "You put down the chair and sit on it." +
-                        "\n ..." +
-                        "\n ..." +
-                        "\n ..." +
-                        "\n You get bored after a while, so you stand up and pick up the chair again.");
+                        "\n..." +
+                        "\n..." +
+                        "\n..." +
+                        "\nYou get bored after a while, so you stand up and pick up the chair again.");
         Item xRay = new ItemText("x-ray", "Whose x-ray is it?", 1,
                 "The top of the x-ray it says 'Patient 33'." +
-                        "\n The x-ray itself seems to be of someone's skull." +
-                        "\n You don't possess the medical knowledge to deduce what's wrong with this x-ray.");
+                        "\nThe x-ray itself seems to be of someone's skull." +
+                        "\nYou don't possess the medical knowledge to deduce what's wrong with this x-ray.");
         Item clue = new ItemText("torn note", "Despite it being torn, you can still read most of it", 1,
                 "... don't know what's wrong with patient 3..." +
-                        "\n ... it's clear something special happened to..." +
-                        "\n ... must continue experimenting on..." +
-                        "\n ... you can't read further.");
+                        "\n... it's clear something special happened to..." +
+                        "\n... must continue experimenting on..." +
+                        "\n... you can't read further.");
         Item sheet = new ItemText("white sheet", "The only sheets around here that don't look dirty.", 2,
                 "You pull the sheets over yourself." +
-                        "\n 'BOOOOOO' you try to say as scary as you can." +
-                        "\n you realise you look and sound ridiculous, and you're embarrassed despite being alone." +
-                        "\n you take off the sheets and put them back in your inventory.");
+                        "\n'BOOOOOO' you try to say as scary as you can." +
+                        "\nyou realise you look and sound ridiculous, and you're embarrassed despite being alone." +
+                        "\nyou take off the sheets and put them back in your inventory.");
         Item newspaper = new ItemText("newspaper", "It seems to be pretty old.", 1,
                 "The headline reads:" +
                         "\n'STUDENTS MAKE NEW TEXT BASED VIDEO GAME, IT'S AMAZING!'" +
-                        "\n you find that hard to believe.");
+                        "\n... you find that hard to believe.");
         Item hat = new ItemText("hat", "It's a fedora. It's not very fashionable nowadays.", 2,
                 "You put it on your head, and immediately feel less attractive." +
-                        "\n You take it off, feeling repulsed.");
+                        "\nYou take it off, feeling repulsed.");
 
         // ItemTransformer items
         Item pie = new ItemTransformer("prisoner's pie", "A cartoony cake. Could something be inside?", 3,
                 "You eat the cake. It tastes terrible, but you find a silver key!", roofKey);
         Item bottle = new ItemTransformer("bottle", "It's containing a dark, unknown liquid", 2,
                 "You smash open the bottle." +
-                        "\n ..." +
-                        "\n ..." +
-                        "\n ew... it got on your pants..." +
-                        "\n in the mess you find a bloody key!", operatingKey);
+                        "\n..." +
+                        "\n..." +
+                        "\new... it got on your pants..." +
+                        "\nyou don't feel so bad when you find a bloody key in the mess you made!", operatingKey);
 
 
         // Declare rooms
@@ -189,17 +189,17 @@ public class Game {
         stairwell.addItem(brick);
         stairwell.addItem(toiletPaper);
 
-        roof = new LockedRoom("rooftop", "the rooftop. It's very misty out here, you can't make out much", 2);
+        roof = new LockedRoom("rooftop", "that it's very misty out here, you can't make out much", 2);
         roof.addItem(note);
         roof.addItem(chair);
         roof.addItem(largeKey);
 
-        basement = new Room("basement", "the basement. A weak light flickers in a basement full of boxes");
+        basement = new Room("basement", "a weak light flickering in a space full of boxes");
         basement.addItem(mortuaryKey);
         basement.addItem(d6);
         basement.addItem(laptop);
 
-        mortuary = new LockedRoom("mortuary", "the mortuary. The mortuary seems empty except for a single body bag", 3);
+        mortuary = new LockedRoom("mortuary", "that it seems empty except for a single body bag", 3);
         mortuary.addItem(d20);
         mortuary.addItem(pie);
         mortuary.addItem(body);
@@ -227,8 +227,8 @@ public class Game {
         radiology.addItem(xRay);
         radiology.addItem(d8);
 
-        outside = new LockedRoom("outside", "outside. The fresh air makes you feel amazing," +
-                "\n like you have won or something. (YOU WON!)", 5);
+        outside = new LockedRoom("outside", "that it's a nice day outside. The fresh air makes you feel amazing," +
+                "\nlike you have won or something. \n(YOU WON!)", 5);
 
         // Initialise exits to all rooms
         // Lobby
@@ -276,7 +276,7 @@ public class Game {
         mortuary.setExit("north", basement);
 
         // Set room to start in
-        currentRoom = infirmary;
+        currentRoom = lobby;
     }
 
     /**
