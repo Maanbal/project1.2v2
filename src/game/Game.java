@@ -86,20 +86,22 @@ public class Game {
         Item keyCard = new ItemKeyCard("key-card", "A key-card with 4 customizable numbers", 1, "which 4 numbers should I enter?");
 
         // ItemKey items
-        // hidden keys
+        // hidden keys (Only add these to ItemTransformer items. Do not add to room list.)
         Item roofKey = new ItemKey("silver key", "Where can you use it?", 1, 2);
         Item operatingKey = new ItemKey("bloody key", "Where can you use it? It's really gross.", 1, 4);
 
         // non-hidden keys
         Item stairwellKey = new ItemKey("brass key", "Where can you use it?", 1, 1);
         Item mortuaryKey = new ItemKey("red key", "Where can you use it? Who even makes their key red?", 1, 3);
-        Item largeKey = new ItemKey("large key", "It looks pretty impressive. Where can you use it?", 1, 5);
+        Item largeKey = new ItemKey("large key", "It looks pretty impressive. It makes you feel close to the end.", 1, 5);
 
         // ItemDie items
         Item d6 = new ItemDie("d6", "A six sided die. It seems kinda useless, but a fun item to play around with.", 1, 6);
         Item d20 = new ItemDie("d20", "A twenty sided die. Someone here must be a D&D fan. " +
                 "It seems kinda useless, but a fun item to play around with.", 1, 20);
         Item d8 = new ItemDie("d8", "An eight sided die. It seems kinda useless, but a fun item to play around with.", 1, 8);
+        Item d14 = new ItemDie("d14", "A fourteen sided die. It seems kinda useless, but a fun item to play around with." +
+                "\nwho even owned a fourteen sided die?", 1, 14);
 
         // ItemText items
         Item laptop = new ItemText("laptop", "It looks broken", 4, "You try to boot the computer, " +
@@ -107,7 +109,7 @@ public class Game {
         Item note = new ItemText("note", "It's scrumpled up.", 1,
                 "Log 4. \n Patient 33 keeps forgetting everything we tell them. " +
                         "\nIt's like they have Alzheimer's, except our tests conclude " +
-                        "\nthat Alzheimer's isn't the case. This is a tough case for sure.");
+                        "\nthat Alzheimer's isn't the case. This is a tough nut to crack for sure.");
         Item chair = new ItemText("chair", "The folding kind.", 3,
                 "You put down the chair and sit on it." +
                         "\n..." +
@@ -117,6 +119,7 @@ public class Game {
         Item xRay = new ItemText("x-ray", "Whose x-ray is it?", 1,
                 "The top of the x-ray it says 'Patient 33'." +
                         "\nThe x-ray itself seems to be of someone's skull." +
+                        "\nA part of the skull is circled with a red marker." +
                         "\nYou don't possess the medical knowledge to deduce what's wrong with this x-ray.");
         Item clue = new ItemText("torn note", "Despite it being torn, you can still read most of it", 1,
                 "... don't know what's wrong with patient 3..." +
@@ -143,13 +146,14 @@ public class Game {
                 "You smash open the bottle." +
                         "\n..." +
                         "\n..." +
-                        "\new... it got on your pants..." +
-                        "\nyou don't feel so bad when you find a bloody key in the mess you made!", operatingKey);
+                        "\nyikes... whatever was inside got on your pants..." +
+                        "\nbut you don't feel so bad after all, because you find a bloody key!", operatingKey);
 
 
         // Declare rooms
         Room lobby, westWing, emergencyFirstAid, operatingRoom, radiology,
-                eastWing, cafeteria, pharmacy, infirmary, nurses_station, stairwell, roof, basement, mortuary, outside;
+                eastWing, cafeteria, pharmacy, infirmary, nurses_station,
+                stairwell, roof, basement, mortuary, outside;
 
         // Initialise rooms and add items to room.
         // If room has a lockID, the room is initialised as a locked room.
@@ -207,6 +211,7 @@ public class Game {
         westWing.addItem(flower);
         westWing.addItem(painting);
         westWing.addItem(coatRack);
+        westWing.addItem(d14);
 
         emergencyFirstAid = new Room("emergency_first_aid", "the emergency first aid room. You have a bad feeling about this place");
         emergencyFirstAid.addItem(sheet);
@@ -290,10 +295,10 @@ public class Game {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        if(currentRoom.getName().equals("outside")){
-           System.out.println("You don't need an exit, because YOU WON!");
+        if (currentRoom.getName().equals("outside")) {
+            System.out.println("You don't need an exit, because YOU WON!");
         } else
-        System.out.println("You give up on finding the truth about your past. Goodbye.");
+            System.out.println("You give up on finding the truth about your past. Goodbye.");
     }
 
     /**
@@ -301,7 +306,7 @@ public class Game {
      */
     private void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to Subject: 0!");
+        System.out.println("Welcome to Subject: 33!");
         System.out.println("Type 'help' if you need help.");
         System.out.println("Type 'about' to find out about the creators of this game.");
         System.out.println();
@@ -412,7 +417,7 @@ public class Game {
                 break;
 
         }
-        if(currentRoom.getName().equals("outside")){
+        if (currentRoom.getName().equals("outside")) {
             wantToQuit = true;
         }
         return wantToQuit;
@@ -421,7 +426,7 @@ public class Game {
 // implementations of user commands:
 
     /**
-     * go back one room
+     * go back to the room you were last.
      */
     private void doBack() {
         if (roomStack.size() > 0) {
@@ -433,7 +438,7 @@ public class Game {
     }
 
     /**
-     * see all items in currentRoom that can be picked
+     * get a list of all items in currentRoom.
      */
     private void doLook() {
         // get list of room items
@@ -452,7 +457,7 @@ public class Game {
     }
 
     /**
-     * look at inventory get name + description + weight
+     * look at inventory. Get name + description + weight
      */
     private void doInventory() {
         // check if inventory size bigger than 0
@@ -475,7 +480,7 @@ public class Game {
 
     /**
      * check if item is in room
-     * if item is in room, remove item from room and add to inventory
+     * if item is in room, remove item from currentRoom and add to inventory
      */
     private void doTake(String itemNameToAdd) {
         // itemNameToAdd is null, prompt player for second word
@@ -512,7 +517,7 @@ public class Game {
 
     /**
      * check if item is in inventory
-     * if in inventory, remove from inventory and add in room
+     * if in inventory, remove from inventory and add to currentRoom
      */
     private void doToss(String itemNameToRemove) {
         // itemNameToRemove is null, prompt player for second word
@@ -544,8 +549,8 @@ public class Game {
 
     /**
      * first checks if player has anything in inventory
-     * if inventory size > 0, checks if item input == item in inventory
-     * then checks if item is in inventory, if not, message to player
+     * if inventory size > 0, checks if String input == item name in inventory
+     * then checks if item is in inventory, if not, send message to player
      * if item implements ItemUsable, the item will be used accordingly, and possibly removed from inventory
      *
      * @param itemNameToUse item input

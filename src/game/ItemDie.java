@@ -2,6 +2,14 @@ package src.game;
 
 import java.util.Random;
 
+/**
+ * Class name: ItemDie
+ *
+ * A class that extends to Item. This class is used to create dice and get different numbers every time it's used.
+ *
+ * @author Merel Foekens
+ * @version final
+ */
 public class ItemDie extends Item implements ItemUsable {
     private final int sides;
     private final Random random = new Random();
