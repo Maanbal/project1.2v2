@@ -119,6 +119,7 @@ public class Game {
     private void createRooms() {
         // list for items
 
+        generate_code randomcode = new generate_code();// creates the password for the pharmacy door
         List<Item> westWingItems = new ArrayList<>();
         List<Item> emergencyFirstAidItems = new ArrayList<>();
         List<Item> operatingRoomItems = new ArrayList<>();
@@ -128,7 +129,7 @@ public class Game {
         List<Item> cafeteriaItems = new ArrayList<>();
         List<Item> pharmacyItems = new ArrayList<>();
         List<Item> infirmaryItems = new ArrayList<>();
-
+        List<Item> nursesRoomItems = new ArrayList<>();
         List<Item> lobbyItems = new ArrayList<>();
         List<Item> stairwellItems = new ArrayList<>();
         List<Item> roofItems = new ArrayList<>();
@@ -149,6 +150,29 @@ public class Game {
         Item toiletPaper = new Item("toiletpaper", "You don't need to go to the bathroom though.", 1, true);
         Item coatRack = new Item("coat rack", "It has a single coat on it, but it looks like moths have been enjoying it.", 20, false);
 
+        //cafetaria
+        Item vendingmachine = new Item("vending machine","Every single item is sold out",300,false);
+        Item sandwich = new ItemText("sandwich", "It doesn't look that fresh anymore",3, "You take a bite and notice that you now have a cockroach hanging half out of your mouth, extra proteins for you!");
+        Item soup = new Item( "pan with \"soup\" ", "Can you even call this soup anymore?",20,false);
+
+        //east wing
+        Item keypad = new Item("keypad", "It looks like I need some sort of card to unlock this door",1,false);
+        Item wheelchair = new Item("wheelchair", "Sadly there is nobody around to push you around with it",50,false);
+        Item poster = new Item("poster","A poster with a random saying on it: \"Time waits for no one\"",1,false);
+
+        //infirmary
+        Item digitalclock = new ItemText("digital clock","It looks like the time isn't displayed correctly", 1, "it shows the time as "+randomcode.getRandomCode()+", weird");
+        Item bed = new Item("bed","At the foot end of the bed is a plate with a number on it: number 33",300,false);
+        Item stuffed_unicorn = new Item("fluffy unicorn","It's so fluffy I'm gonna die!",2,true);
+
+        //pharmacy
+        Item sleeping_pill = new ItemText("sleeping pill", "Sleep is the last thing I am thinking about in my current situation", 2, "You're starting to feel a bit drowsy, falling asleep right now " +
+                "wouldn't ....be.... the best.....i.d..e...a..................\nzzzzzzzzzzzzzzzzzzzzzzzzzz\nzzzzzzzzzzzzzzzzzzzzzzzzzz\nzzzzzzzzzzzzzzzzzzzzzzzzzz\nYou wake up an unknown amount of time later");
+        Item westwingKey = new ItemKey("shiny key","It has a keychain with a compass rose pointing to the west",1,5);
+
+        //nurses station
+        Item mirror = new Item("mirror","Why do I have the feeling that I'm being watched?",1,false);
+
         // ItemKey items
         // hidden keys
         Item roofKey = new ItemKey("silver key", "Where can you use it?", 1, 2);
@@ -157,6 +181,9 @@ public class Game {
         // non-hidden keys
         Item stairwellKey = new ItemKey("brass key", "Where can you use it?", 1, 1);
         Item mortuaryKey = new ItemKey("red key", "Where can you use it? Who even makes their key red?", 1, 3);
+
+        //ItemKeycard Items
+        Item keyCard = new ItemKeyCard("key-card","A key-card with 4 customizable numbers", 1,"which 4 numbers should I enter?");
 
         // ItemDie items
         Item d6 = new ItemDie("d6", "A six sided die. It seems kinda useless, but a fun item to play around with.", 1, 6);
@@ -209,7 +236,6 @@ public class Game {
                         "\n ew... it got on your pants..." +
                         "\n in the mess you find a bloody key!", operatingKey);
 
-
         // Lobby items
         lobbyItems.add(stairwellKey);
         lobbyItems.add(plant);
@@ -236,13 +262,27 @@ public class Game {
         radiologyItems.add(d8);
 
         // East wing items
+        eastWingItems.add(keypad);
+        eastWingItems.add(wheelchair);
+        eastWingItems.add(poster);
 
         // Cafeteria items
+        cafeteriaItems.add(vendingmachine);
+        cafeteriaItems.add(sandwich);
+        cafeteriaItems.add(soup);
 
         // Pharmacy items
+        pharmacyItems.add(sleeping_pill);
+        pharmacyItems.add(westwingKey);
+
+        //nursery room items
+        nursesRoomItems.add(mirror);
+        nursesRoomItems.add(keyCard);
 
         // Infirmary items
-
+        infirmaryItems.add(digitalclock);
+        infirmaryItems.add(bed);
+        infirmaryItems.add(stuffed_unicorn);
         // Basement items
         basementItems.add(mortuaryKey);
         basementItems.add(d6);
@@ -264,7 +304,7 @@ public class Game {
 
         // Declare rooms
         Room lobby, westWing, emergencyFirstAid, operatingRoom, radiology,
-                eastWing, cafeteria, pharmacy, infirmary, stairwell, roof, basement, mortuary;
+                eastWing, cafeteria, pharmacy, infirmary,nurses_station, stairwell, roof, basement, mortuary;
 
         // Initialise rooms and add items to room.
         // If room has a lockID, the room is initialised as a locked room.
@@ -284,7 +324,7 @@ public class Game {
         mortuary = new LockedRoom("mortuary", "in the mortuary. The mortuary seems empty except for a single body bag", 3);
         mortuary.setItemsInRoom(mortuaryItems);
 
-        westWing = new Room("west wing", "in the west wing. There's signs to radiology and emergency first aid");
+        westWing = new LockedRoom("west wing", "in the west wing. There's signs to radiology and emergency first aid",5);
         westWing.setItemsInRoom(westWingItems);
 
         emergencyFirstAid = new Room("emergency first aid", " in the emergency first aid room. You have a bad feeling about this place");
@@ -296,10 +336,40 @@ public class Game {
         radiology = new Room("radiology", " in radiology. There are a bunch of x-rays");
         radiology.setItemsInRoom(radiologyItems);
 
+        eastWing = new Room("east wing", "in the east wing");
+        eastWing.setItemsInRoom(eastWingItems);
+
+        cafeteria = new Room("cafeteria", "in the cafeteria");
+        cafeteria.setItemsInRoom(cafeteriaItems);
+
+        pharmacy = new LockedRoom("pharmacy", "in the pharmacy",randomcode.getRandomCode());
+        pharmacy.setItemsInRoom(pharmacyItems);
+
+        nurses_station = new Room("nurses_station","in the nurses_station");
+        nurses_station.setItemsInRoom(nursesRoomItems);
+
+        infirmary = new Room("infirmary", "in the infirmary");
+        infirmary.setItemsInRoom(infirmaryItems);
+
 
         // initialise exits
         lobby.setExit("south", stairwell);
         lobby.setExit("west", westWing);
+        lobby.setExit("east",eastWing);
+
+        eastWing.setExit("lobby",lobby);
+        eastWing.setExit("cafeteria", cafeteria);
+        eastWing.setExit("pharmacy",pharmacy);
+        eastWing.setExit("nurses-station", nurses_station);
+
+        pharmacy.setExit("eastwing",eastWing);
+
+        cafeteria.setExit("eastwing",eastWing);
+
+        nurses_station.setExit("infirmary",infirmary);
+        nurses_station.setExit("eastwing",eastWing);
+
+        infirmary.setExit("nurses_station",nurses_station);
 
         stairwell.setExit("north", lobby);
         stairwell.setExit("up", roof);
