@@ -154,9 +154,6 @@ public class Game {
         // Initialise rooms and add items to room.
         // If room has a lockID, the room is initialised as a locked room.
         // to match keys and rooms, set lockID and keyID to the same number.
-        // TODO new Room: outside
-        // add exit to lobby when final puzzle is solved
-        // Win is achieved when stepping into the room
 
         lobby = new Room("lobby", "in the hospital lobby");
         lobby.addItem(plant);
@@ -228,7 +225,7 @@ public class Game {
         radiology.addItem(d8);
 
         outside = new LockedRoom("outside", "that it's a nice day outside. The fresh air makes you feel amazing," +
-                "\nlike you have won or something. \n(YOU WON!)", 5);
+                "\nlike you have won or something", 5);
 
         // Initialise exits to all rooms
         // Lobby
@@ -293,6 +290,9 @@ public class Game {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
+        if(currentRoom.getName().equals("outside")){
+           System.out.println("You don't need an exit, because YOU WON!");
+        } else
         System.out.println("You give up on finding the truth about your past. Goodbye.");
     }
 
@@ -411,6 +411,9 @@ public class Game {
                 }
                 break;
 
+        }
+        if(currentRoom.getName().equals("outside")){
+            wantToQuit = true;
         }
         return wantToQuit;
     }
