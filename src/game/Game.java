@@ -152,7 +152,7 @@ public class Game {
 
         //cafetaria
         Item vendingmachine = new Item("vending machine","Every single item is sold out",300,false);
-        Item sandwich = new ItemText("sandwich", "It doesn't look that fresh anymore",3, "You take a bite and notice that you now have a cockroach hanging half out of your mouth, extra proteins for you!");
+        Item sandwich = new ItemConsumable("sandwich", "It doesn't look that fresh anymore",3, "You take a bite and notice that you now have a cockroach hanging half out of your mouth, extra proteins for you!");
         Item soup = new Item( "\"soup\" pan ", "Can you even call this soup anymore?",20,false);
 
         //east wing
@@ -166,7 +166,7 @@ public class Game {
         Item stuffed_unicorn = new Item("fluffy unicorn","It's so fluffy I'm gonna die!",2,true);
 
         //pharmacy
-        Item sleeping_pill = new ItemText("sleeping-pill bottle", "Sleep is the last thing I am thinking about in my current situation", 2, "You're starting to feel a bit drowsy, \nzzzzzzzzzzzzzzzzzzzzzzzzzz\nYou wake up an unknown amount of time later");
+        Item sleeping_pill = new ItemConsumable("sleeping pill", "Sleep is the last thing I am thinking about in my current situation", 2, "You're starting to feel a bit drowsy, \nzzzzzzzzzzzzzzzzzzzzzzzzzz\nYou wake up an unknown amount of time later");
         Item westWingKey = new ItemKey("shiny key","It has a keychain with a compass rose pointing to the west",1,5);
 
         //nurses station
