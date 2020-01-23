@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private static final int MAX_INVENTORY_WEIGHT = 5;
+    private static int MAX_INVENTORY_WEIGHT = 5;
     private int currentInventoryWeight = 0;
     private List<Item> inventory;
 
@@ -63,5 +63,9 @@ public class Player {
     public void removeFromInventory(Item item) {
         inventory.remove(item);
         currentInventoryWeight -= item.getWeight();
+    }
+    
+    public void carryAll(){
+        MAX_INVENTORY_WEIGHT = 1000;
     }
 }

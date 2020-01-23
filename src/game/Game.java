@@ -60,7 +60,7 @@ public class Game {
         Item fridge = new Item("fridge", "It has a huge lock on it. It probably holds medication of sorts.", 400, false);
         Item toiletPaper = new Item("toiletpaper", "You don't need to go to the bathroom though.", 1, true);
         Item coatRack = new Item("coat rack", "It has a single coat on it, but it looks like moths have been enjoying it.", 20, false);
-    
+        
         //cafetaria
         Item vendingmachine = new Item("vending machine","Every single item is sold out",300,false);
         Item sandwich = new ItemText("sandwich", "It doesn't look that fresh anymore",3, "You take a bite and notice that you now have a cockroach hanging half out of your mouth, extra proteins for you!");
@@ -156,60 +156,60 @@ public class Game {
         // add exit to lobby when final puzzle is solved
         // Win is achieved when stepping into the room
         
-        lobby = new Room("lobby", "in the hospital lobby");
+        lobby = new Room("lobby", "In the heart of the hospital");
         lobby.addItem(stairwellKey);
         lobby.addItem(plant);
         lobby.addItem(couch);
         // East Wing, rooms and items
-        eastWing = new Room("east_wing", "a big hall with colorful walls");
+        eastWing = new Room("east_wing", "A big hall with colorful walls");
         eastWing.addItem(keypad);
         eastWing.addItem(wheelchair);
         eastWing.addItem(poster);
-        cafeteria = new Room("cafeteria", "a lunchroom with eating tables and a kitchen");
+        cafeteria = new Room("cafeteria", "A lunchroom with eating tables and a kitchen");
         cafeteria.addItem(vendingmachine);
         cafeteria.addItem(sandwich);
         cafeteria.addItem(soup);
-        infirmary = new Room("infirmary", "lots of empty hospital beds");
+        infirmary = new Room("infirmary", "Lots of empty hospital beds");
         infirmary.addItem(digitalclock);
         infirmary.addItem(bed);
         infirmary.addItem(stuffed_unicorn);
-        pharmacy = new Room("pharmacy", "a drug store, there seem to be some medicine left");
+        pharmacy = new LockedRoom("pharmacy", "A drug store, there seem to be some medicine left", randomcode.getRandomCode());
         pharmacy.addItem(sleeping_pill);
         pharmacy.addItem(westWingKey);
-        nurses_station = new Room("nurses_station","nobody to look after the patients here");
+        nurses_station = new Room("nurses_station","Nobody to look after the patients here. Not that there are any...");
         nurses_station.addItem(mirror);
         nurses_station.addItem(keyCard);
         // Lobby, rooms and items
-        stairwell = new LockedRoom("stairwell", "a solemn looking stairwell. It seems you can go up as well as down", 1);
+        stairwell = new LockedRoom("stairwell", "A solemn looking stairwell. It seems you can go up as well as down", 1);
         stairwell.addItem(brick);
         stairwell.addItem(toiletPaper);
-        roof = new LockedRoom("rooftop", "the rooftop. It's very misty out here, you can't make out much", 2);
+        roof = new LockedRoom("rooftop", "The rooftop. It's very misty out here, you can't make out much", 2);
         roof.addItem(note);
         roof.addItem(chair);
-        basement = new Room("basement", "the basement. A weak light flickers in a basement full of boxes");
+        basement = new Room("basement", "The basement. A weak light flickers in a basement full of boxes");
         basement.addItem(mortuaryKey);
         basement.addItem(d6);
         basement.addItem(laptop);
-        mortuary = new LockedRoom("mortuary", "the mortuary. The mortuary seems empty except for a single body bag", 3);
+        mortuary = new LockedRoom("mortuary", "The mortuary seems empty except for a single body bag", 3);
         mortuary.addItem(d20);
         mortuary.addItem(pie);
         mortuary.addItem(body);
         mortuary.addItem(newspaper);
         
         // West Wing, rooms and items
-        westWing = new Room("west_wing", "the west wing. There's signs to radiology and emergency first aid");
+        westWing = new LockedRoom("west_wing", "There's signs leading to radiology and emergency first aid", 5);
         westWing.addItem(flower);
         westWing.addItem(painting);
         westWing.addItem(coatRack);
-        emergencyFirstAid = new Room("emergency_first_aid", "the emergency first aid room. You have a bad feeling about this place");
+        emergencyFirstAid = new Room("emergency_first_aid", "The emergency first aid room. You have a bad feeling about this place");
         emergencyFirstAid.addItem(sheet);
         emergencyFirstAid.addItem(lamp);
         emergencyFirstAid.addItem(fridge);
-        operatingRoom = new LockedRoom("operating_theatre", "the operating theatre. It looks meticulously clean", 4);
+        operatingRoom = new LockedRoom("operating_theatre", "The operating theatre. It looks meticulously clean", 4);
         operatingRoom.addItem(scalpel);
         operatingRoom.addItem(clue);
         operatingRoom.addItem(hat);
-        radiology = new Room("radiology", "the radiology department. There are a bunch of x-rays");
+        radiology = new Room("radiology", "The radiology department. There are a bunch of x-rays");
         radiology.addItem(bottle);
         radiology.addItem(xRay);
         radiology.addItem(d8);
@@ -356,7 +356,12 @@ public class Game {
             case "take":
                 // check if there's a third word, concat with second word if third word is present,
                 // try to put player's input in inventory
-                if (command.getThirdWord() != null) {
+                if (command.getSecondWord().equals("control") && command.getThirdWord().equals("NOW")){
+                    unlockAll();
+                    player.carryAll();
+                    System.out.println("You are now strong and independent");
+                }
+                else if (command.getThirdWord() != null) {
                     String conCommand = command.getSecondWord().concat(" " + command.getThirdWord());
                     doTake(conCommand);
                 } else {
@@ -485,7 +490,7 @@ public class Game {
             }
             // item isn't found
             if (!isAdded) {
-                System.out.println("You search " + currentRoom.getShortDescription() +
+                System.out.println("You search " + currentRoom.getName() +
                         " thoroughly, but you can't find a " + itemNameToAdd);
             }
         }
@@ -633,6 +638,21 @@ public class Game {
         }
     }
 
+    private void unlockAll(){
+        // Gives player cheat keys to all locked rooms
+//      Item pharmacy_key = new ItemKey("pharmacyKey", "Use in East Wing. Opens the pharmacy", 0, randomcode.getRandomCode());
+        Item westWing_key = new ItemKey("westwingKey", "Use in lobby. Opens west wing.", 0, 5);
+        Item stairwell_key = new ItemKey("stairwellKey", "Use in lobby. Opens stairwell", 0, 1);
+        Item roof_key = new ItemKey("roofKey", "Use in stairwell. Opens roof", 0, 2);
+        Item operating_key = new ItemKey("operatingKey", "Use in Emergency First Aid. Opens Operating Room", 0, 4);
+        Item mortuary_key = new ItemKey("mortuaryKey", "Use in basement. Opens Mortuary", 0, 3);
+        player.addToInventory(westWing_key);
+        player.addToInventory(stairwell_key);
+        player.addToInventory(roof_key);
+        player.addToInventory(operating_key);
+        player.addToInventory(mortuary_key);
+    }
+    
     /**
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
