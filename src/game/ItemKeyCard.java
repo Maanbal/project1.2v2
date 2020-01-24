@@ -5,7 +5,12 @@ import java.util.Scanner;
 /**
  * Class name: ItemKeyCard
  *
- * Class extends ItemText and implements ItemUsable
+ * Class extends ItemKey and implements ItemUsable
+ * This class handles the usage of the keycard item, it requires input from the player.
+ * If the input is incorrect the item won't open the door it's made to open, if  the player enters the correct code they
+ * will be able to unlock the door.
+ * @author Ramon Oosterloo
+ * @version final
  */
 public class ItemKeyCard extends ItemKey implements ItemUsable {
 
@@ -27,6 +32,7 @@ public class ItemKeyCard extends ItemKey implements ItemUsable {
      * key-card method, ifused at the correct location with the correct code entered it will unlock a door
      * @param player
      * @param room
+     * @return return if the door is opened and the key needs to be removed
      */
     @Override
     public boolean onUse(Player player, Room room) {
@@ -52,7 +58,7 @@ public class ItemKeyCard extends ItemKey implements ItemUsable {
             }
             else{
                 System.out.print("I have to enter 4 numbers\n");}
-        }catch(java.util.InputMismatchException e){ //catches and handles the InputMismatchException that happens if a player would enter any other character than a number
+        }catch(java.util.InputMismatchException e){ //catches and handles the InputMismatchException that happens if a player would enter any other datatype than an int.
             System.out.println("I have to enter 4 numbers");
         }
         return false;
