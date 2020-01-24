@@ -281,7 +281,7 @@ public class Game {
         mortuary.setExit("north", basement);
 
         // Set room to start in
-        currentRoom = lobby;
+        currentRoom = infirmary;
     }
 
     /**
