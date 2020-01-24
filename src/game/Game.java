@@ -63,7 +63,7 @@ public class Game {
         Item coatRack = new Item("coat rack", "It has a single coat on it, but it looks like moths have been enjoying it.", 20, false);
 
         //cafetaria
-
+        Item digitalclock = new ItemText("digital clock", "It looks like the time isn't displayed correctly", 1, "it shows the time as " + randomcode.getRandomCode() + ", weird");
         Item vendingmachine = new Item("vending machine","Every single item is sold out", 300, false);
         Item sandwich = new ItemConsumable("sandwich", "It doesn't look that fresh anymore", 3, "You take a bite and notice that you now have a cockroach hanging half out of your mouth, extra proteins for you!");
         Item soup = new Item( "\"soup\" pan ", "Can you even call this soup anymore?", 20, false);
@@ -74,7 +74,6 @@ public class Game {
         Item poster = new Item("poster", "A poster with a random saying on it: \"Time waits for no one\"", 1, false);
 
         //infirmary
-        Item digitalclock = new ItemText("digital clock", "It looks like the time isn't displayed correctly", 1, "it shows the time as " + randomcode.getRandomCode() + ", weird");
         Item bed = new Item("bed", "At the foot end of the bed is a plate with a number on it: number 33", 300, false);
         Item stuffed_unicorn = new Item("fluffy unicorn", "It's so fluffy I'm gonna die!", 2, true);
 
@@ -174,9 +173,9 @@ public class Game {
         cafeteria.addItem(vendingmachine);
         cafeteria.addItem(sandwich);
         cafeteria.addItem(soup);
-
+        cafeteria.addItem(digitalclock);
+    
         infirmary = new Room("infirmary", "lots of empty hospital beds");
-        infirmary.addItem(digitalclock);
         infirmary.addItem(bed);
         infirmary.addItem(stuffed_unicorn);
 
@@ -299,7 +298,9 @@ public class Game {
             finished = processCommand(command);
         }
         if (currentRoom.getName().equals("outside")) {
-            System.out.println("You don't need an exit, because YOU WON!");
+            System.out.println("Congratulations! You escaped the hospital and WON the game!");
+            System.out.println("You finished the game in " + parser.getActionCount() + " actions.");
+            System.out.println("Thanks you for playing Subject 33!");
         } else
             System.out.println("You give up on finding the truth about your past. Goodbye.");
     }
