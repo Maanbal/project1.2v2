@@ -69,7 +69,7 @@ public class Game {
         Item soup = new Item( "\"soup\" pan ", "Can you even call this soup anymore?", 20, false);
 
         //east wing
-        Item keypad = new Item("keypad", "It looks like I need some sort of card to unlock this door", 1, false);
+        Item keypad = new Item("keypad", "It looks like I need some sort of card to unlock the pharmacy door", 1, false);
         Item wheelchair = new Item("wheelchair", "Sadly there is nobody around to push you around with it", 50, false);
         Item poster = new Item("poster", "A poster with a random saying on it: \"Time waits for no one\"", 1, false);
 
@@ -310,7 +310,7 @@ public class Game {
     private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to Subject: 33!\n" +
-                "You awaken from a deep sleep and you don't how how you got here, or who you are");
+                "You awaken from a deep sleep and you don't how how you got here, or who you are.");
         System.out.println("Type 'help' if you need help.");
         System.out.println("Type 'about' to find out about the creators of this game.");
         System.out.println();
