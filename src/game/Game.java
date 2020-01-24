@@ -440,6 +440,7 @@ public class Game {
      */
     private void doBack() {
         if (roomStack.size() > 0) {
+            roomSet.add(currentRoom);
             currentRoom = roomStack.pop();
             System.out.println(currentRoom.getLongDescription());
         } else {
