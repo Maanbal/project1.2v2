@@ -1,5 +1,12 @@
 package src.game;
 
+/**
+ * This class generates the random number that is needed for unlocking a certain door
+ * @author Ramon Oosterloo
+ * @version final
+ */
+
+
 public class GenerateCode {
     private java.util.Random rndGenerator = new java.util.Random();
     private int randomCode;

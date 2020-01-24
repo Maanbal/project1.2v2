@@ -1,5 +1,12 @@
 package src.game;
 
+/**
+ * This class extends from ItemText and is called when an item needs to disappear after being used
+ *
+ * @author Merel Foekens Ramon Oosterloo
+ * @version final
+ */
+
 public class ItemConsumable extends ItemText implements ItemUsable {
     private final String useMessage;
 
